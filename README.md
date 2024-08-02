@@ -18,7 +18,8 @@ This guide explains how to set up a validator node on the Zenrock Gardia blockch
 ### 1. Clone this repository
 
 ``` sh
-git clone ....
+git clone https://github.com/zenrocklabs/zenrock-validators.git
+cd zenrock-validators
 ```
 
 ### 2. Run the Initialization Script
@@ -27,13 +28,14 @@ git clone ....
 ./init_gardia.sh
 ```
 
-*NOTE:* Replace the variable `VALIDATOR_MONIKER`
+*NOTE:* Replace the variable `VALIDATOR_MONIKER` and optionally `ZENROCK_HOME`
 
 ### 3. Run the node
 
 ``` sh
-./zenrockd start --home ./
+./zenrockd start --home ZENROCK_HOME
 ```
+*NOTE:* Replace ZENROCK_HOME with the value used in step 2 (current directory by default)
 
 ### 3. Create a New Zenrockd Account
 
