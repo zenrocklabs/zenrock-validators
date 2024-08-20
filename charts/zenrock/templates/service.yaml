@@ -1,0 +1,24 @@
+{{- if .Values.service.enabled -}}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "zenrock.fullname" . }}
+  labels:
+    {{- include "zenrock.labels" . | nindent 4 }}
+    {{- if .Values.zenrock.metrics.enabled }}
+    prometheus: "true"
+    {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  {{- toYaml .Values.service.ports | nindent 4 }}
+  {{- if .Values.zenrock.metrics.enabled }}
+    - port: 26660
+      targetPort: 26660
+      protocol: TCP
+      name: metrics
+  {{- end }}
+  selector:
+    {{- include "zenrock.selectorLabels" . | nindent 4 }}
+{{- end }}

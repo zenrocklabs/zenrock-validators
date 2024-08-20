@@ -1,0 +1,14 @@
+{{- if and (.Values.zenrock.persistence.enabled) (not .Values.zenrock.persistence.existingClaim) }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ printf "%s-data" (include "zenrock.fullname" .) }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.zenrock.persistence.size }}
+  storageClassName: {{ .Values.zenrock.persistence.storageClass }}
+{{- end }}

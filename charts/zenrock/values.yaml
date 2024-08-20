@@ -1,0 +1,169 @@
+---
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+deploymentAnnotations: {}
+podExtraLabels: {}
+
+service:
+  enabled: true
+  type: ClusterIP
+  ports:
+    - port: 26656
+      targetPort: 26656
+      protocol: TCP
+      name: peer
+    - port: 26657
+      targetPort: 26657
+      protocol: TCP
+      name: rpc
+    - port: 9790
+      targetPort: 9790
+      protocol: TCP
+      name: grpc
+    - port: 1717
+      targetPort: 1717
+      protocol: TCP
+      name: api
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 26657
+  initialDelaySeconds: 10
+  periodSeconds: 90
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 26657
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  failureThreshold: 100
+
+imagePullSecrets: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+images:
+  init_zenrock: "alpine:3.20.2"
+  cosmovisor: "alpine:3.20.2"
+  sidecar: "alpine:3.20.2"
+
+# Sidecar enables AVS
+sidecar:
+  enabled: false
+  version: "1.0.1"
+  releases_url: "https://releases.gardia.zenrocklabs.io"
+  env:
+    ORACLE_CONFIG_FILE: "/root-data/sidecar/config.yaml"
+  # Read config from a secret, the subpath should be named `config.yaml`
+  configFromSecret: ""
+  # If configFromSecret is set `config` is ignored
+  config: |
+    grpc_port: 9191
+    state_file: "/root-data/sidecar/cache.json"
+    eth_oracle:
+      rpc_url: "wss://..."
+      network_name: "Holešky Ethereum Testnet"
+      service_manager_contract_addr: "0x82644Ccf3760d171334a1D058ECF6F07B36eBBC2"
+      price_feed_contract_addr: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+
+cosmovisor:
+  version: "v1.6.0"
+  releases_url: "https://github.com/cosmos/cosmos-sdk/releases/download"
+  env:
+    DAEMON_HOME: "/root-data"
+    DAEMON_NAME: "zenrockd"
+    DAEMON_ALLOW_DOWNLOAD_BINARIES: true
+    DAEMON_DOWNLOAD_MUST_HAVE_CHECKSUM: false
+    DAEMON_RESTART_AFTER_UPGRADE: true
+    DAEMON_RESTART_DELAY: "5s"
+    DAEMON_SHUTDOWN_GRACE: "5s"
+    DAEMON_POLL_INTERVAL: "5s"
+    DAEMON_DATA_BACKUP_DIR: ""
+    UNSAFE_SKIP_BACKUP: false
+    DAEMON_PREUPGRADE_MAX_RETRIES: 0
+    COSMOVISOR_DISABLE_LOGS: false
+    COSMOVISOR_COLOR_LOGS: true
+    COSMOVISOR_TIMEFORMAT_LOGS: "kitchen"
+    COSMOVISOR_CUSTOM_PREUPGRADE: ""
+    COSMOVISOR_DISABLE_RECASE: false
+
+zenrock:
+  # Binary version at genesis time
+  genesis_version: "1.29.0"
+  releases_url: "https://releases.gardia.zenrocklabs.io"
+  # It expects an RPC endpoint to query the genesis.json file
+  genesis_url: "https://rpc.gardia.zenrocklabs.io/genesis"
+  genesis_s3:
+    enabled: false
+    bucket_name: "zenrock-testnet-genesis"
+  # Secret with the subpath for:
+  #   - priv_validator_key.json
+  #   - node_key.json
+  nodeKeyFromSecret: ""
+  chain_id: "gardia-1"
+  # Start node from latest snapshot
+  snapshot:
+    enabled: true
+    url: "https://releases.gardia.zenrocklabs.io/zenrock-latest.tar.gz"
+  metrics:
+    enabled: true
+  config:
+    # app.toml
+    minimum_gas_prices: "0nrock"
+    # default: the last 362880 states are kept, pruning at 10 block intervals
+    # nothing: all historic states will be saved, nothing will be deleted (i.e. archiving node)
+    # everything: 2 latest states will be kept; pruning at 10 block intervals.
+    # custom: allow pruning options to be manually specified through 'pruning-keep-recent', and 'pruning-interval'
+    pruning: "nothing"
+    # these are applied if and only if the pruning strategy is custom.
+    pruning_keep_recent: "100000"
+    pruning_interval: "100"
+    # config.toml
+    moniker: "moniker"
+    persistent_peers: ""
+    private_peers: ""
+    unconditional_peer_ids: ""
+    external_address: ""
+    allow_duplicate_ip: true
+    pex: true
+    create_empty_blocks: false
+    create_empty_blocks_interval: "0s"
+    timeout_commit: "5s"
+    log_format: "plain"
+    log_level: "info"
+    statesync_enabled: false
+    statesync_rpc_servers: ""
+    statesync_trust_height: 0
+    statesync_trust_hash: ""
+    statesync_trust_period: "168h0m0s"
+    p2p_send_rate: 5120000
+    p2p_recv_rate: 5120000
+  env: {}
+  configMapEnv: []
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1024Mi
+    limits:
+      cpu: 1500m
+      memory: 2048Mi
+  persistence:
+    enabled: true
+    existingClaim: false
+    claimName: ""
+    # storageClass and size are only used when existingClaim is false
+    storageClass: "gp2-qredo"
+    size: "10Gi"

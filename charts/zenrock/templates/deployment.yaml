@@ -1,0 +1,198 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zenrock.fullname" . }}
+  labels:
+    {{- include "zenrock.labels" . | nindent 4 }}
+  annotations:
+    configmap.reloader.stakater.com/reload: "{{ include "zenrock.fullname" . }}"
+  {{- with .Values.deploymentAnnotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "zenrock.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "zenrock.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podExtraLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Always
+      {{- if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- else }}
+      serviceAccountName: {{ include "zenrock.fullname" . }}
+      {{- end }}
+      initContainers:
+      - name: init-zenrock
+        image: {{ .Values.images.init_zenrock }}
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+        args: ["/init.sh"]
+        volumeMounts:
+        - name: root-data
+          mountPath: /root-data
+        - name: config-files
+          mountPath: /init.sh
+          subPath: init.sh
+          readOnly: true
+        - name: config-files
+          mountPath: /tmp/priv_validator_state.json
+          subPath: priv_validator_state.json
+          readOnly: true
+
+      containers:
+        {{- if .Values.sidecar.enabled }}
+        - name: validator-sidecar
+          image: {{ .Values.images.sidecar }}
+          command: ["/bin/sh"]
+          args:
+          - "-c"
+          - |
+            /root-data/sidecar/bin/validator_sidecar
+          volumeMounts:
+          - name: root-data
+            mountPath: /root-data
+          {{- if not .Values.sidecar.configFromSecret }}
+          - name: config-files
+            mountPath: /root-data/sidecar/config.yaml
+            subPath: sidecar_config.yaml
+            readOnly: true
+          {{- else }}
+          - name: sidecar-config
+            mountPath: /root-data/sidecar/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          {{- end }}
+          env:
+            {{- range $key, $value := .Values.sidecar.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+        {{- end }}
+        - name: cosmovisor
+          image: {{ .Values.images.cosmovisor }}
+          command: ["/bin/sh"]
+          args:
+          - "-c"
+          - |
+            # temp sleep to wait for sidecar
+            sleep 20
+            /root-data/cosmovisor/bin/cosmovisor run start --home /root-data
+          volumeMounts:
+          - name: root-data
+            mountPath: /root-data
+          - name: config-files
+            mountPath: /root-data/config/app.toml
+            subPath: app.toml
+            readOnly: true
+          - name: config-files
+            mountPath: /root-data/config/client.toml
+            subPath: client.toml
+            readOnly: true
+          - name: config-files
+            mountPath: /root-data/config/config.toml
+            subPath: config.toml
+            readOnly: true
+          {{- if .Values.zenrock.nodeKeyFromSecret }}
+          - name: node-key
+            mountPath: /root-data/config/priv_validator_key.json
+            subPath: priv_validator_key.json
+            readOnly: true
+          - name: node-key
+            mountPath: /root-data/config/node_key.json
+            subPath: node_key.json
+            readOnly: true
+          {{- end }}
+          {{- if .Values.volumeMounts }}
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.zenrock.env .Values.cosmovisor.env }}
+          env:
+            {{- range $key, $value := .Values.zenrock.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+            {{- range $key, $value := .Values.cosmovisor.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+          {{- end }}
+          {{- if .Values.configMapEnv }}
+          envFrom:
+            {{- range .Values.configMapEnv }}
+          - configMapRef:
+              name: {{ . | quote }}
+            {{- end }}
+          {{- end }}
+          imagePullPolicy: IfNotPresent
+          {{- if .Values.ports }}
+          ports:
+          {{- toYaml .Values.ports | nindent 12 }}
+          {{- end }}
+          {{- if .Values.livenessProbe }}
+          livenessProbe:
+          {{- toYaml .Values.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.zenrock.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: config-files
+        configMap:
+          name: {{ include "zenrock.fullname" . }}
+      - name: root-data
+        persistentVolumeClaim:
+          {{- if .Values.zenrock.persistence.existingClaim }}
+          claimName: {{ .Values.zenrock.persistence.claimName }}
+          {{- else }}
+          claimName: {{ printf "%s-data" (include "zenrock.fullname" .) }}
+          {{- end }}
+      {{- if .Values.sidecar.configFromSecret }}
+      - name: sidecar-config
+        secret:
+          secretName: {{ .Values.sidecar.configFromSecret }}
+      {{- end }}
+      {{- if .Values.zenrock.nodeKeyFromSecret }}
+      - name: node-key
+        secret:
+          secretName: {{ .Values.zenrock.nodeKeyFromSecret }}
+      {{- end }}
+      {{- if .Values.volumes }}
+        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- end }}
