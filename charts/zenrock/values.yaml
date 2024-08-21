@@ -122,7 +122,7 @@ zenrock:
     enabled: true
   config:
     # app.toml
-    minimum_gas_prices: "0nrock"
+    minimum_gas_prices: "0urock"
     # default: the last 362880 states are kept, pruning at 10 block intervals
     # nothing: all historic states will be saved, nothing will be deleted (i.e. archiving node)
     # everything: 2 latest states will be kept; pruning at 10 block intervals.
