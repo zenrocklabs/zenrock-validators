@@ -63,7 +63,7 @@ images:
 # Sidecar enables AVS
 sidecar:
   enabled: false
-  version: "1.0.1"
+  version: "1.1.1"
   releases_url: "https://releases.gardia.zenrocklabs.io"
   env:
     ORACLE_CONFIG_FILE: "/root-data/sidecar/config.yaml"
@@ -78,6 +78,20 @@ sidecar:
       network_name: "Holešky Ethereum Testnet"
       service_manager_contract_addr: "0x82644Ccf3760d171334a1D058ECF6F07B36eBBC2"
       price_feed_contract_addr: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+  eigen_operator:
+    keysFromSecret: "eigen-keys"
+    aggregator_address: localhost:8090
+    enable_metrics: true
+    metrics_address: localhost:9090
+    enable_node_api: true
+    node_api_address: localhost:9010
+    register_on_startup: true
+    # Derived address from the ECDSA pub key for ethereum
+    operator_address: 0x860B6912C2d0337ef05bbC89b0C2CB6CbAEAB4A5
+    token_strategy_addr: 0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575
+    avs_registry_coordinator_address: 0xFD471836031dc5108809D173A067e8486B9047A3
+    operator_state_retriever_address: 0x162A433068F51e18b7d13932F27e66a3f99E6890
+
 
 cosmovisor:
   version: "v1.6.0"

@@ -73,6 +73,14 @@ spec:
           volumeMounts:
           - name: root-data
             mountPath: /root-data
+          - name: eigen-keys
+            mountPath: /eigen/keys/ecdsa.key.json
+            subPath: ecdsa.key.json
+            readOnly: true
+          - name: eigen-keys
+            mountPath: /eigen/keys/bls.key.json
+            subPath: bls.key.json
+            readOnly: true
           {{- if not .Values.sidecar.configFromSecret }}
           - name: config-files
             mountPath: /root-data/sidecar/config.yaml
@@ -192,6 +200,11 @@ spec:
       - name: node-key
         secret:
           secretName: {{ .Values.zenrock.nodeKeyFromSecret }}
+      {{- end }}
+      {{- if .Values.sidecar.eigen_operator.keysFromSecret }}
+      - name: eigen-keys
+        secret:
+          secretName: {{ .Values.sidecar.eigen_operator.keysFromSecret }}
       {{- end }}
       {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}
