@@ -81,6 +81,10 @@ spec:
             mountPath: /eigen/keys/bls.key.json
             subPath: bls.key.json
             readOnly: true
+          - name: config-files
+            mountPath: /root-data/sidecar/eigen_operator_config.yaml
+            subPath: eigen_operator_config.yaml
+            readOnly: true
           {{- if not .Values.sidecar.configFromSecret }}
           - name: config-files
             mountPath: /root-data/sidecar/config.yaml

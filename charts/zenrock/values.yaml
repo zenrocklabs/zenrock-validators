@@ -66,14 +66,14 @@ sidecar:
   version: "1.1.1"
   releases_url: "https://releases.gardia.zenrocklabs.io"
   env:
-    ORACLE_CONFIG_FILE: "/root-data/sidecar/config.yaml"
+    SIDECAR_CONFIG_FILE: "/root-data/sidecar/config.yaml"
   # Read config from a secret, the subpath should be named `config.yaml`
   configFromSecret: ""
   # If configFromSecret is set `config` is ignored
   config: |
     grpc_port: 9191
     state_file: "cache.json"
-    operator_config: "eigen_operator_config.yaml"
+    operator_config: "/root-data/sidecar/eigen_operator_config.yaml"
     eth_oracle:
       rpc:
         local: "http://127.0.0.1:8545"
