@@ -17,8 +17,8 @@ data:
     operator_state_retriever_address: {{ .Values.sidecar.eigen_operator.operator_state_retriever_address }}
 
     # ETH RPC URL
-    eth_rpc_url: http://localhost:8545
-    eth_ws_url: ws://localhost:8545
+    eth_rpc_url: {{ .Values.sidecar.eigen_operator.eth_rpc_url }}
+    eth_ws_url: {{ .Values.sidecar.eigen_operator.eth_ws_url }}
 
     # ECDSA key
     ecdsa_private_key_store_path: /eigen/keys/ecdsa.key.json
