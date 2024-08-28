@@ -103,6 +103,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.sidecar.eigen_operator.keysFromSecret }}
                   key: OPERATOR_BLS_KEY_PASSWORD
+            - name: OPERATOR_ECDSA_KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sidecar.eigen_operator.keysFromSecret }}
+                  key: OPERATOR_ECDSA_KEY_PASSWORD
             {{- end }}
             {{- range $key, $value := .Values.sidecar.env }}
             - name: {{ $key }}
