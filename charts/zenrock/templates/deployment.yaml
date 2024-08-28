@@ -141,6 +141,13 @@ spec:
           {{- end }}
           {{- if or .Values.zenrock.env .Values.cosmovisor.env }}
           env:
+            {{- if .Values.sidecar.enabled }}
+            - name: OPERATOR_BLS_KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sidecar.eigen_operator.keysFromSecret }}
+                  key: OPERATOR_BLS_KEY_PASSWORD
+            {{- end }}
             {{- range $key, $value := .Values.zenrock.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
