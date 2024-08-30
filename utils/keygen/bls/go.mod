@@ -1,4 +1,4 @@
-module github.com/zenrocklabs/zenrock-validators/keygen/bls
+module github.com/zenrocklabs/zenrock-validators/utils/keygen/bls
 
 go 1.22.5
 
