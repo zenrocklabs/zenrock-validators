@@ -121,8 +121,12 @@ spec:
           - "-c"
           - |
             # temp sleep to wait for sidecar
-            sleep 20
+            sleep 10
+            {{- if .Values.sidecar.enabled }}
             /root-data/cosmovisor/bin/cosmovisor run start --home /root-data
+            {{- else }}
+            /root-data/cosmovisor/bin/cosmovisor run start --home /root-data --non-validator
+            {{- end }}
           volumeMounts:
           - name: root-data
             mountPath: /root-data

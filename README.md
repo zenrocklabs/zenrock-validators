@@ -70,7 +70,12 @@ Create a file named `validator-info.json` with the following content, replacing 
 
 ```
 
-Replace "PUB_KEY" with your validator's public key obtained from the previous step.
+Replace "PUB_KEY" with your validator's public key, which can be obtained running the following command:
+
+``` sh
+./zenrockd tendermint show-validator
+```
+
 
 Submit the validator creation transaction:
 
@@ -79,7 +84,8 @@ Submit the validator creation transaction:
     --home ./ \
     --node https://rpc.gardia.zenrocklabs.io \
     --gas-prices 10000urock \
-    --from validator-x
+    --from validator-x \
+    --chain-id gardia-1
 ```
 
 ## Post-Setup Steps

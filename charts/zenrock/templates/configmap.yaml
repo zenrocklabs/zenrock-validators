@@ -9,6 +9,7 @@ data:
     # this sets the logger level (true = info, false = debug)
     production: true
     operator_address: {{ .Values.sidecar.eigen_operator.operator_address }}
+    operator_validator_address: {{ .Values.sidecar.eigen_operator.operator_validator_address }}
 
     # EigenLayer Slasher contract address
     # This is the address of the contracts which are deployed in the anvil saved state
@@ -35,9 +36,10 @@ data:
     node_api_ip_port_address: {{ .Values.sidecar.eigen_operator.node_api_address }}
     enable_node_api: {{ .Values.sidecar.eigen_operator.enable_node_api }}
 
-    register_operator_on_startup: {{ .Values.sidecar.eigen_operator.register_on_startup }}
     # address of token to deposit tokens into when registering on startup
     token_strategy_addr: {{ .Values.sidecar.eigen_operator.token_strategy_addr }}
+    service_manager_address: {{ .Values.sidecar.eigen_operator.service_manager_address }}
+
   {{- end }}
   {{- if not .Values.sidecar.configFromSecret }}
   sidecar_config.yaml: |
