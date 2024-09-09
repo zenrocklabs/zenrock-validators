@@ -6,6 +6,7 @@ metadata:
 data:
   {{- if .Values.sidecar.enabled }}
   eigen_operator_config.yaml: |
+    register_operator_on_startup: {{ .Values.sidecar.eigen_operator.register_on_startup }}
     # this sets the logger level (true = info, false = debug)
     production: true
     operator_address: {{ .Values.sidecar.eigen_operator.operator_address }}
