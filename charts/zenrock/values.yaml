@@ -127,7 +127,7 @@ cosmovisor:
 
 zenrock:
   # Binary version at genesis time
-  genesis_version: "4.5.0"
+  genesis_version: "4.7.0"
   releases_url: "https://releases.gardia.zenrocklabs.io"
   # It expects an RPC endpoint to query the genesis.json file
   genesis_url: "https://rpc.gardia.zenrocklabs.io/genesis"

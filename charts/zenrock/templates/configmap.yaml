@@ -44,7 +44,7 @@ data:
   {{- end }}
   {{- if not .Values.sidecar.configFromSecret }}
   sidecar_config.yaml: |
-    {{ .Values.sidecar.config }}
+    {{- .Values.sidecar.config | nindent 4 }}
   {{- end }}
   priv_validator_state.json: |
     {
