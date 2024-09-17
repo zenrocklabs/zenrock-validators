@@ -222,7 +222,7 @@ zenrock:
     pruning_interval: "100"
     pruning_keep_recent: "100000"
   genesis_url: https://rpc.gardia.zenrocklabs.io/genesis
-  genesis_version: 4.7.0
+  genesis_version: 4.7.1
   metrics:
     enabled: true
   persistence:
