@@ -159,7 +159,7 @@ Replace "PUB_KEY" with your validator's public key, which can be obtained runnin
 Submit the validator creation transaction:
 
 ``` sh
-./zenrockd tx staking create-validator [path/to/validator-info.json] \
+./zenrockd tx validation create-validator [path/to/validator-info.json] \
     --node https://rpc.gardia.zenrocklabs.io \
     --gas-prices 10000urock \
     --from my-validator \
