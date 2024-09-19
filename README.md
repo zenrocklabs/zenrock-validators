@@ -112,6 +112,16 @@ RPC endpoint tokens, you can use this secret.
 
 
 ### Zenrock account
+The binary releases can be downloaded from here:
+
+https://releases.gardia.zenrocklabs.io
+
+e.g. with latest release ( of the time of writing the documentation ) you'd download:
+
+``` sh
+sudo curl -o zenrockd https://releases.gardia.zenrocklabs.io/zenrockd-4.7.1
+```
+
 Create a zenrock account and note the address generated.
 
 ``` sh
