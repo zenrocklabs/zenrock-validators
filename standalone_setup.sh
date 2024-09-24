@@ -2,7 +2,7 @@
 set -e
 
 #This version should not be changed, it is the version used at genesis time
-ZENROCK_GENESIS_VERSION='4.7.2'
+ZENROCK_GENESIS_VERSION='4.7.1'
 
 COSMOVISOR_VERSION='1.6.0'
 SIDECAR_VERSION='1.2.3'
