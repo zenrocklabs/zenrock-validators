@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
-source versions.txt
+
+#This version should not be changed, it is the version used at genesis time
+ZENROCK_GENESIS_VERSION='4.7.2'
+
+COSMOVISOR_VERSION='1.6.0'
+SIDECAR_VERSION='1.2.3'
+
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -63,10 +69,14 @@ read -p "Enter the path where you want to create the Application directory or wh
 service_cleanup() {
     read -p "!!! THIS WILL REMOVE THE VALIDATOR AND SIDECAR SERVICES, PLEASE CONFIRM (yes/no): " confirm_removal
     if [[ "$confirm_removal" == "yes" ]]; then
-      systemctl stop validator-sidecar.service ; systemctl disable validator-sidecar.service
-      systemctl stop cosmovisor.service ;  systemctl disable cosmovisor.service
-      rm -f /etc/systemd/system/cosmovisor.service
-      rm -f /etc/systemd/system/validator-sidecar.service
+      if [ -f "/etc/systemd/system/validator-sidecar.service" ]; then
+        systemctl stop validator-sidecar.service ; systemctl disable validator-sidecar.service
+        rm -f /etc/systemd/system/validator-sidecar.service
+      fi
+      if [ -f "/etc/systemd/system/cosmovisor.service" ]; then
+       systemctl stop cosmovisor.service ;  systemctl disable cosmovisor.service
+       rm -f /etc/systemd/system/cosmovisor.service
+      fi
       systemctl daemon-reload
       rm -rf $user_path
       gecho "Service removal completed"
@@ -134,7 +144,7 @@ cp $DIR/configs/config.yaml $user_path/sidecar/
 
 echo "Downloading latest zenrockd release"
 if ! [ -f "$user_path/cosmovisor/genesis/bin/zenrockd" ]; then
-    curl -s "https://releases.gardia.zenrocklabs.io/zenrockd-$ZENROCKD_VERSION" \
+    curl -s "https://releases.gardia.zenrocklabs.io/zenrockd-$ZENROCK_GENESIS_VERSION" \
       -o "$user_path/cosmovisor/genesis/bin/zenrockd"
     chmod +x "$user_path/cosmovisor/genesis/bin/zenrockd"
     gecho "Zenrockd setup completed in : $user_path/cosmovisor/genesis/bin/zenrockd"
@@ -152,7 +162,7 @@ fi
 
 echo "Downloading latest validator sidecar release"
 if ! [ -f "$user_path/sidecar/bin/validator_sidecar" ]; then
-    curl -s "https://releases.gardia.zenrocklabs.io/validator_sidecar-$SIDECAR" \
+    curl -s "https://releases.gardia.zenrocklabs.io/validator_sidecar-$SIDECAR_VERSION" \
       -o "$user_path/sidecar/bin/validator_sidecar"
     chmod +x "$user_path/sidecar/bin/validator_sidecar"
     gecho "Validator sidecar setup completed in : $user_path/sidecar/bin/validator_sidecar"
@@ -178,10 +188,10 @@ binary_update() {
         systemctl stop cosmovisor.service
         systemctl stop validator-sidecar.service
         rm -f "$user_path/sidecar/bin/validator_sidecar"
-        curl -s "https://releases.gardia.zenrocklabs.io/validator_sidecar-$SIDECAR" \
+        curl -s "https://releases.gardia.zenrocklabs.io/validator_sidecar-$SIDECAR_VERSION" \
           -o "$user_path/sidecar/bin/validator_sidecar"
         chmod +x "$user_path/sidecar/bin/validator_sidecar"
-        gecho "Service Validator sidecar updated to version $SIDECAR"
+        gecho "Service Validator sidecar updated to version $SIDECAR_VERSION"
         start_service "validator-sidecar"
         start_service "cosmovisor"
     else
@@ -189,22 +199,8 @@ binary_update() {
     fi
   fi
    
-  if [ -f "$user_path/cosmovisor/genesis/bin/zenrockd" ]; then
-    read -p "Do you want to update the zenrockd release? (yes/no): " confirm
 
-    if [[ "$confirm" == "yes" ]]; then
-        rm -f "$user_path/cosmovisor/genesis/bin/zenrockd"
-        curl -s "https://releases.gardia.zenrocklabs.io/zenrockd-$ZENROCKD_VERSION" \
-          -o "$user_path/cosmovisor/genesis/bin/zenrockd"
-        chmod +x "$user_path/cosmovisor/genesis/bin/zenrockd"
-        gecho "Zenrockd update completed to verison $ZENROCKD_VERSION"
-    else
-        echo "No changes made."
-    fi  
-  fi
-
-
-   if [ -f "$user_path/cosmovisor/bin/cosmovisor" ]; then
+  if [ -f "$user_path/cosmovisor/bin/cosmovisor" ]; then
     read -p "Do you want to update the Cosmovisor service? (yes/no): " confirm
 
     if [[ "$confirm" == "yes" ]]; then
@@ -316,7 +312,6 @@ Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
 Environment="DAEMON_DOWNLOAD_MUST_HAVE_CHECKSUM=false"
 Environment="COSMOVISOR_CUSTOM_PREUPGRADE="
 Environment="DAEMON_DATA_BACKUP_DIR="
-Environment="DAEMON_DOWNLOAD_MUST_HAVE_CHECKSUM=false"
 Environment="DAEMON_HOME=$user_path"
 Environment="DAEMON_NAME=zenrockd"
 Environment="DAEMON_POLL_INTERVAL=5s"
