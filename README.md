@@ -334,7 +334,7 @@ cosmovisor has been started successfully.
 Once the setup is completed, you just need to follow the same steps as in the Helmchart setup which are:
 
 1. Seting up the validator-info.json configuration file
-2. Submdit the validator creation transaction
+2. Submit the validator creation transaction
 
 
 
