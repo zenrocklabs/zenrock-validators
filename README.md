@@ -266,7 +266,7 @@ helm install zenrock-validator zenrock/zenrock -f custom_values.yaml
 
 ## Manual setup
 
-The script is provided as-is. We recommend using the Helm Chart as the primary installation method. 
+The script is provided as-is. We recommend using the Helm Chart as the primary installation method. Its configured only for testnet, with mainnet launch it will be re-configured
 
 Make sure that you have your Zenrockd Address generated with the command:
 
