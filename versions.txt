@@ -1,0 +1,3 @@
+export ZENROCKD_VERSION='4.7.1'
+export SIDECAR='1.2.3'
+export COSMOVISOR_VERSION='1.6.0'
