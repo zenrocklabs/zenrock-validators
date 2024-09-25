@@ -198,7 +198,7 @@ sidecar:
   version: 1.2.2
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
-    aggregator_address: avs-aggregator.gardia.zenrocklabs.io:443
+    aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
     avs_registry_coordinator_address: 0xD4BdE8DD7B82C04E4c1617B0F477f4F8B2CcdE2F
     enable_metrics: true
     enable_node_api: true
