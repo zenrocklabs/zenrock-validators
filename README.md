@@ -207,9 +207,9 @@ sidecar:
     keysFromSecret: <validator-eigen-keys>
     metrics_address: 0.0.0.0:9292
     node_api_address: 0.0.0.0:9191
-    operator_address: <VALUE FROM STEP #>
+    operator_address: <VALUE FROM STEP - ECDSA key>
     operator_state_retriever_address: 0x148e80620b9464Fa0731467d504A2F760E7242C8
-    operator_validator_address: <VALUE FROM STEP #>
+    operator_validator_address: <VALUE FROM STEP - zenvaloper address>
     register_on_startup: true
     service_manager_address: 0xb48F00b89A4017f78794F35cb1ef540EDA5d201B
     token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9

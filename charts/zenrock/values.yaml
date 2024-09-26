@@ -208,5 +208,5 @@ zenrock:
     existingClaim: false
     claimName: ""
     # storageClass and size are only used when existingClaim is false
-    storageClass: "gp2-qredo"
+    storageClass: ""
     size: "10Gi"
