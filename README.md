@@ -3,6 +3,8 @@
 This guide explains how to set up a validator node on the Zenrock Gardia blockchain 
 using Kubernetes and Helm.
 
+Note: Funds for the validators would have to be requested from the Zenrock team. Do not use the faucet for it!
+
 ## Prerequisites
 
 ### Kubernetes Cluster
