@@ -163,4 +163,10 @@ RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
-``` 
+```
+
+Once the setup is completed, you just need to follow the same steps as in the Helmchart setup which are:
+
+    Seting up the validator-info.json configuration file
+    Submit the validator creation transaction
+
