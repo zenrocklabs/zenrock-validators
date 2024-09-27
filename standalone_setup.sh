@@ -1,5 +1,10 @@
 #!/bin/bash
 set -e
+if [ "$(id -u)" -eq 0 ]; then
+    umask 0077
+else
+    umask 0022
+fi
 
 #This version should not be changed, it is the version used at genesis time
 ZENROCK_GENESIS_VERSION='4.7.1'
@@ -12,7 +17,11 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 
 service_exists() {
     local service_name="$1"
-    systemctl list-units --type=service | grep -q "$service_name"
+    if [ "$(id -u)" -eq 0 ]; then
+       systemctl list-units --type=service | grep -q "$service_name"
+    else
+       systemctl --user list-units --type=service | grep -q "$service_name"
+    fi
 }
 
 spinner(){
@@ -28,6 +37,20 @@ spinner(){
     done
     printf "    \b\b\b\b"
 }
+
+keygen_exec_check() {
+  $DIR/utils/keygen/ecdsa/ecdsa --password test >/dev/null 2>&1
+  if ! [ $? -eq 0 ]; then
+    echo "Need to reconfigure keygen binaries, please wait..."
+    cd $DIR/utils/keygen/ecdsa
+      go mod tidy >/dev/null 2>&1; go build >/dev/null 2>&1 &
+      spinner 
+    cd $DIR/utils/keygen/bls
+      go mod tidy >/dev/null 2>&1; go build >/dev/null 2>&1 &
+      spinner 
+  fi
+}
+
 
 usage() {
     echo "Usage: $0"
@@ -63,44 +86,76 @@ wait_for_input() {
 }
 
 
-read -p "Enter the path where you want to create the Application directory or where it exists: " user_path
+read -p "Enter the FULL path where you want to create the Application directory or where it exists: " user_path
     declare -g user_path
 
 service_cleanup() {
     read -p "!!! THIS WILL REMOVE THE VALIDATOR AND SIDECAR SERVICES, PLEASE CONFIRM (yes/no): " confirm_removal
     if [[ "$confirm_removal" == "yes" ]]; then
-      if [ -f "/etc/systemd/system/validator-sidecar.service" ]; then
-        systemctl stop validator-sidecar.service ; systemctl disable validator-sidecar.service
-        rm -f /etc/systemd/system/validator-sidecar.service
-      fi
-      if [ -f "/etc/systemd/system/cosmovisor.service" ]; then
-       systemctl stop cosmovisor.service ;  systemctl disable cosmovisor.service
-       rm -f /etc/systemd/system/cosmovisor.service
-      fi
-      systemctl daemon-reload
-      rm -rf $user_path
-      gecho "Service removal completed"
+        if [ "$(id -u)" -eq 0 ]; then 
+            if [ -f "/etc/systemd/system/validator-sidecar.service" ]; then
+                systemctl stop validator-sidecar.service
+                systemctl disable validator-sidecar.service
+                rm -f /etc/systemd/system/validator-sidecar.service
+            fi
+            if [ -f "/etc/systemd/system/cosmovisor.service" ]; then
+                systemctl stop cosmovisor.service
+                systemctl disable cosmovisor.service
+                rm -f /etc/systemd/system/cosmovisor.service
+            fi
+            systemctl daemon-reload
+            rm -rf "$user_path"
+            echo "Service removal completed"
+        else  
+            if [ -f "$HOME/.config/systemd/user/validator-sidecar.service" ]; then
+                systemctl --user stop validator-sidecar.service
+                systemctl --user disable validator-sidecar.service
+                rm -f "$HOME/.config/systemd/user/validator-sidecar.service"
+            fi
+            if [ -f "$HOME/.config/systemd/user/cosmovisor.service" ]; then
+                systemctl --user stop cosmovisor.service
+                systemctl --user disable cosmovisor.service
+                rm -f "$HOME/.config/systemd/user/cosmovisor.service"
+            fi
+            systemctl --user daemon-reload
+            rm -rf "$user_path"
+            echo "Service removal completed"
+        fi
     else
-      exit 0
+        exit 0
     fi
 }
 
+
 start_service() {
     SERVICE=$1
-
-    systemctl daemon-reload
-    systemctl start "$SERVICE.service"
-
+    if [ "$(id -u)" -eq 0 ]; then
+       systemctl daemon-reload
+       systemctl start "$SERVICE.service"
+    else
+       systemctl --user daemon-reload
+       systemctl --user start "$SERVICE.service"
+    fi 
     echo "Waiting for $SERVICE service initialization"
     sleep 10 &
     spinner 
 
-    if systemctl status "$SERVICE.service" > /dev/null 2>error.log; then
-        gecho "$SERVICE has been started successfully."
+    if [ "$(id -u)" -eq 0 ]; then
+        if  systemctl status "$SERVICE.service" > /dev/null 2>error.log; then
+            gecho "$SERVICE has been started successfully."
+        else
+            echo "Error: Initialization failed."
+            cat error.log
+            exit 1
+        fi
     else
-        echo "Error: Initialization failed."
-        cat error.log
-        exit 1
+        if  systemctl --user status "$SERVICE.service" > /dev/null 2>error.log; then
+            gecho "$SERVICE has been started successfully."
+        else
+            echo "Error: Initialization failed."
+            cat error.log
+            exit 1
+        fi
     fi
 }
 
@@ -120,27 +175,29 @@ if [ -d "$user_path" ]; then
   echo "The path already exists."
 else
   # Create the directory path
-  mkdir -p "$user_path"
+  eval mkdir -p "$user_path"
   gecho "Directory created successfully at: $user_path"
 fi
 
 # Create the subdirectories within the main directory
-  mkdir -p "$user_path/config"
-  mkdir -p "$user_path/cosmovisor"
-  mkdir -p "$user_path/cosmovisor/bin"
-  mkdir -p "$user_path/cosmovisor/genesis/bin"
-  mkdir -p "$user_path/cosmovisor/genesis/upgrades"
-  mkdir -p "$user_path/sidecar/bin"
-  mkdir -p "$user_path/sidecar/keys"
+  eval mkdir -p "$user_path/config"
+  eval mkdir -p "$user_path/cosmovisor"
+  eval mkdir -p "$user_path/cosmovisor/bin"
+  eval mkdir -p "$user_path/cosmovisor/genesis/bin"
+  eval mkdir -p "$user_path/cosmovisor/genesis/upgrades"
+  eval mkdir -p "$user_path/sidecar/bin"
+  eval mkdir -p "$user_path/sidecar/keys"
+  if [ "$(id -u)" -eq 0 ]; then
+    eval mkdir -p "$HOME/.config/systemd/user"
+  fi
 }
 
 
 ##### Service setup ####
 service_setup() {
 
-
-cp $DIR/configs/eigen_operator_config.yaml $user_path/sidecar/
-cp $DIR/configs/config.yaml $user_path/sidecar/
+cp $DIR/configs/eigen_operator_config.yaml "$user_path/sidecar/"
+cp $DIR/configs/config.yaml "$user_path/sidecar/"
 
 echo "Downloading latest zenrockd release"
 if ! [ -f "$user_path/cosmovisor/genesis/bin/zenrockd" ]; then
@@ -185,8 +242,13 @@ binary_update() {
     read -p "Do you want to update the Validator sidecar service? (yes/no): " confirm
 
     if [[ "$confirm" == "yes" ]]; then
-        systemctl stop cosmovisor.service
-        systemctl stop validator-sidecar.service
+        if [ "$(id -u)" -eq 0 ]; then
+          systemctl stop cosmovisor.service
+          systemctl stop validator-sidecar.service
+        else
+          systemctl --user stop cosmovisor.service
+          systemctl --user stop validator-sidecar.service
+        fi
         rm -f "$user_path/sidecar/bin/validator_sidecar"
         curl -s "https://releases.gardia.zenrocklabs.io/validator_sidecar-$SIDECAR_VERSION" \
           -o "$user_path/sidecar/bin/validator_sidecar"
@@ -204,8 +266,13 @@ binary_update() {
     read -p "Do you want to update the Cosmovisor service? (yes/no): " confirm
 
     if [[ "$confirm" == "yes" ]]; then
-        systemctl stop cosmovisor.service
-        systemctl stop validator-sidecar.service
+        if [ "$(id -u)" -eq 0 ]; then
+          systemctl stop cosmovisor.service
+          systemctl stop validator-sidecar.service
+        else
+          systemctl --user stop cosmovisor.service
+          systemctl --user stop validator-sidecar.service
+        fi
         rm -f "$user_path/cosmovisor/bin/*"
         curl -L -s https://github.com/cosmos/cosmos-sdk/releases/download/cosmovisor%2Fv$COSMOVISOR_VERSION/cosmovisor-v$COSMOVISOR_VERSION-linux-amd64.tar.gz | tar -C $user_path/cosmovisor/bin/ -xz
         gecho "Service Cosmovisor updated to version $COSMOVISOR_VERSION"
@@ -223,20 +290,18 @@ keys_setup() {
 read -p "Enter password for the ECDSA key: " ecdsa_pass
   declare -g ecdsa_pass
 
-  ecdsa_creation=$($DIR/utils/keygen/ecdsa/ecdsa --password $ecdsa_pass)
+  ecdsa_creation=$($DIR/utils/keygen/ecdsa/ecdsa --password $ecdsa_pass --output-file $user_path/sidecar/keys/ecdsa.key.json)
   ecdsa_address=$(echo "$ecdsa_creation" | grep "Public address" | cut -d: -f2)
   declare -g ecdsa_address
 
   echo "Public address: $ecdsa_address"
   echo "Please fund this address before proceeding further"
   wait_for_input
-  mv $DIR/keystore/* $user_path/sidecar/keys/ecdsa.key.json
 
 # BLS key creation
 read -p "Enter password for the BLS key: " bls_pass
 
-  $DIR/utils/keygen/bls/bls --password $bls_pass
-  mv $DIR/keystore/* $user_path/sidecar/keys/bls.key.json
+  $DIR/utils/keygen/bls/bls --password $bls_pass --output-file $user_path/sidecar/keys/bls.key.json
 }
 
 
@@ -257,8 +322,13 @@ zenvelop_address=$($DIR/utils/val_addr/val_addr $zenrock_address)
   sleep 10 &
   spinner 
 
+if [ "$(id -u)" -eq 0 ]; then
+    config_path="/etc/systemd/system/validator-sidecar.service"
+else
+    config_path="$HOME/.config/systemd/user/validator-sidecar.service"
+fi
 
-bash -c cat > /etc/systemd/system/validator-sidecar.service <<EOL
+tee "$config_path" > /dev/null <<EOL
 [Unit]
 Description=Validator sidecar service
 
@@ -277,8 +347,11 @@ ExecStart=$user_path/sidecar/bin/validator_sidecar
 [Install]
 WantedBy=multi-user.target
 EOL
-
-systemctl enable validator-sidecar.service
+if [ "$(id -u)" -eq 0 ]; then
+    systemctl enable validator-sidecar.service
+else
+    systemctl --user enable validator-sidecar.service
+fi
 start_service "validator-sidecar"
 }
 
@@ -296,7 +369,13 @@ curl -s https://rpc.gardia.zenrocklabs.io/genesis | jq .result.genesis > $user_p
 
 sed -i "s|MY_VALIDATOR|$validator_name|g" $user_path/config/config.toml
 
-bash -c cat > /etc/systemd/system/cosmovisor.service <<EOL
+if [ "$(id -u)" -eq 0 ]; then
+    config_path="/etc/systemd/system/cosmovisor.service"
+else
+    config_path="$HOME/.config/systemd/user/cosmovisor.service"
+fi
+
+tee "$config_path" > /dev/null <<EOL
 [Unit]
 StartLimitBurst=2
 StartLimitInterval=11  
@@ -330,7 +409,11 @@ RestartSec=3s
 WantedBy=multi-user.target
 EOL
 
-systemctl enable cosmovisor.service
+if [ "$(id -u)" -eq 0 ]; then
+    systemctl enable cosmovisor.service
+else
+    systemctl --user enable cosmovisor.service
+fi
 start_service "cosmovisor"
 }
 
@@ -352,6 +435,7 @@ read -p "Enter your choice (1/2/3): " choice
 case "$choice" in
     1)
         service_check
+        keygen_exec_check
         paths_init
         service_setup
         keys_setup
