@@ -268,6 +268,8 @@ helm install zenrock-validator zenrock/zenrock -f custom_values.yaml
 
 ## Manual setup
 
+Note: If you're setting all services from scratch, you can use the standalone_setup.sh script, otherwise, please check the scaffold_setup folder for instructions on configuring a scaffold configuration.
+
 The script is provided as-is. We recommend using the Helm Chart as the primary installation method. Its configured only for testnet, with mainnet launch it will be re-configured
 
 Make sure that you have your Zenrockd Address generated with the command:

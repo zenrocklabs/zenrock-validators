@@ -39,8 +39,11 @@ spinner(){
 }
 
 keygen_exec_check() {
+  set +e
   $DIR/utils/keygen/ecdsa/ecdsa --password test >/dev/null 2>&1
-  if ! [ $? -eq 0 ]; then
+  local status=$?
+  set -e
+  if ! [ $status -eq 0 ]; then
     echo "Need to reconfigure keygen binaries, please wait..."
     cd $DIR/utils/keygen/ecdsa
       go mod tidy >/dev/null 2>&1; go build >/dev/null 2>&1 &
@@ -50,7 +53,6 @@ keygen_exec_check() {
       spinner 
   fi
 }
-
 
 usage() {
     echo "Usage: $0"
@@ -72,7 +74,7 @@ recho() {
 
 wait_for_input() {
     while true; do
-        read -p "Type 'yes' to proceed, once you confirm that the Address has been funded with tokens: " user_input
+        read -e -p "Type 'yes' to proceed, once you confirm that the Address has been funded with tokens: " user_input
         if [[ "$user_input" == "yes" ]]; then
             echo "Proceeding to the next step..."
             break
@@ -86,11 +88,11 @@ wait_for_input() {
 }
 
 
-read -p "Enter the FULL path where you want to create the Application directory or where it exists: " user_path
+read -e -p "Enter the FULL path where you want to create the Application directory or where it exists: " user_path
     declare -g user_path
 
 service_cleanup() {
-    read -p "!!! THIS WILL REMOVE THE VALIDATOR AND SIDECAR SERVICES, PLEASE CONFIRM (yes/no): " confirm_removal
+    read -e -p "!!! THIS WILL REMOVE THE VALIDATOR AND SIDECAR SERVICES, PLEASE CONFIRM (yes/no): " confirm_removal
     if [[ "$confirm_removal" == "yes" ]]; then
         if [ "$(id -u)" -eq 0 ]; then 
             if [ -f "/etc/systemd/system/validator-sidecar.service" ]; then
@@ -161,13 +163,15 @@ start_service() {
 
 
 paths_init() {
-  read -p "Enter your Zenrock address: " zenrock_address
+  read -e -p "Enter your Zenrock address: " zenrock_address
     declare -g zenrock_address
-  read -p "Enter name for your validator: " validator_name
+  read -e -p "Enter name for your validator: " validator_name
     declare -g validator_name
-  read -p "Enter your mainnet eth endpoint without https:// : " mainnet_input
+  read -e -p "Enter your mainnet eth endpoint (with http/https) : " mainnet_input
     declare -g mainnet_input
-  read -p "Enter your holesky eth endpoint without https:// : " testnet_input
+  read -e -p "Enter your holesky eth endpoint (with http/https) : " testnet_input
+    declare -g testnet_input
+  read -e -p "Enter your holesky eth WS endpoint ( with wss ) : " testnet_ws_input
     declare -g testnet_input
 
 # Check if the path already exists
@@ -239,7 +243,7 @@ fi
 binary_update() {
 
    if [ -f "$user_path/sidecar/bin/validator_sidecar" ]; then
-    read -p "Do you want to update the Validator sidecar service? (yes/no): " confirm
+    read -e -p "Do you want to update the Validator sidecar service? (yes/no): " confirm
 
     if [[ "$confirm" == "yes" ]]; then
         if [ "$(id -u)" -eq 0 ]; then
@@ -263,7 +267,7 @@ binary_update() {
    
 
   if [ -f "$user_path/cosmovisor/bin/cosmovisor" ]; then
-    read -p "Do you want to update the Cosmovisor service? (yes/no): " confirm
+    read -e -p "Do you want to update the Cosmovisor service? (yes/no): " confirm
 
     if [[ "$confirm" == "yes" ]]; then
         if [ "$(id -u)" -eq 0 ]; then
@@ -287,7 +291,7 @@ binary_update() {
 keys_setup() {
 
 # ECDSA key creation
-read -p "Enter password for the ECDSA key: " ecdsa_pass
+read -e -p "Enter password for the ECDSA key: " ecdsa_pass
   declare -g ecdsa_pass
 
   ecdsa_creation=$($DIR/utils/keygen/ecdsa/ecdsa --password $ecdsa_pass --output-file $user_path/sidecar/keys/ecdsa.key.json)
@@ -299,7 +303,7 @@ read -p "Enter password for the ECDSA key: " ecdsa_pass
   wait_for_input
 
 # BLS key creation
-read -p "Enter password for the BLS key: " bls_pass
+read -e -p "Enter password for the BLS key: " bls_pass
 
   $DIR/utils/keygen/bls/bls --password $bls_pass --output-file $user_path/sidecar/keys/bls.key.json
 }
@@ -309,12 +313,12 @@ read -p "Enter password for the BLS key: " bls_pass
 sidecar_service_setup() {
 zenvelop_address=$($DIR/utils/val_addr/val_addr $zenrock_address)
   sed -i "s|EIGEN_OPERATOR_CONFIG|$user_path/sidecar/eigen_operator_config.yaml|g" $user_path/sidecar/config.yaml
-  sed -i "s|TESTNET_HOLESKY_ENDPOINT|https://$testnet_input|g" $user_path/sidecar/config.yaml
-  sed -i "s|MAINNET_ENDPOINT|https://$mainnet_input|g" $user_path/sidecar/config.yaml
+  sed -i "s|TESTNET_HOLESKY_ENDPOINT|$testnet_input|g" $user_path/sidecar/config.yaml
+  sed -i "s|MAINNET_ENDPOINT|$mainnet_input|g" $user_path/sidecar/config.yaml
   sed -i "s|OPERATOR_VALIDATOR_ADDRESS_TBD|$zenvelop_address|g" $user_path/sidecar/eigen_operator_config.yaml
   sed -i "s|OPERATOR_ADDRESS_TBU|$ecdsa_address|g" $user_path/sidecar/eigen_operator_config.yaml
-  sed -i "s|ETH_RPC_URL|https://$testnet_input|g" $user_path/sidecar/eigen_operator_config.yaml
-  sed -i "s|ETH_WS_URL|wss://$testnet_input|g" $user_path/sidecar/eigen_operator_config.yaml
+  sed -i "s|ETH_RPC_URL|$testnet_input|g" $user_path/sidecar/eigen_operator_config.yaml
+  sed -i "s|ETH_WS_URL|$testnet_ws_input|g" $user_path/sidecar/eigen_operator_config.yaml
   sed -i "s|ECDSA_KEY_PATH|$user_path/sidecar/keys/ecdsa.key.json|g" $user_path/sidecar/eigen_operator_config.yaml
   sed -i "s|BLS_KEY_PATH|$user_path/sidecar/keys/bls.key.json|g" $user_path/sidecar/eigen_operator_config.yaml
 
@@ -430,7 +434,7 @@ echo "Select an option:"
 echo "1 - Initialize service"
 echo "2 - Update service"
 echo "3 - Cleanup service setup"
-read -p "Enter your choice (1/2/3): " choice
+read -e -p "Enter your choice (1/2/3): " choice
 
 case "$choice" in
     1)
