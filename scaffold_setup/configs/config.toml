@@ -175,7 +175,7 @@ external_address = ""
 # Comma separated list of seed nodes to connect to
 seeds = ""
 # Comma separated list of nodes to keep persistent connections to
-persistent_peers = "6ef43e8d5be8d0499b6c57eb15d3dd6dee809c1e@sentry-1.gardia.zenrocklabs.io:26656,1dfbd854bab6ca95be652e8db078ab7a069eae6f@sentry-2.gardia.zenrocklabs.io:36656"
+persistent_peers = "6ef43e8d5be8d0499b6c57eb15d3dd6dee809c1e@sentry-1.gardia.zenrocklabs.io:26656,1dfbd854bab6ca95be652e8db078ab7a069eae6f@sentry-2.gardia.zenrocklabs.io:36656,63014f89cf325d3dc12cc8075c07b5f4ee666d64@sentry-3.gardia.zenrocklabs.io:46656,12f0463250bf004107195ff2c885be9b480e70e2@sentry-4.gardia.zenrocklabs.io:56656"
 # UPNP port forwarding
 upnp = false
 # Path to address book
@@ -188,7 +188,7 @@ max_num_inbound_peers = 40
 # Maximum number of outbound peers to connect to, excluding persistent peers
 max_num_outbound_peers = 10
 # List of node IDs, to which a connection will be (re)established ignoring any existing limits
-unconditional_peer_ids = "6ef43e8d5be8d0499b6c57eb15d3dd6dee809c1e,1dfbd854bab6ca95be652e8db078ab7a069eae6f"
+unconditional_peer_ids = "6ef43e8d5be8d0499b6c57eb15d3dd6dee809c1e,1dfbd854bab6ca95be652e8db078ab7a069eae6f,63014f89cf325d3dc12cc8075c07b5f4ee666d64,12f0463250bf004107195ff2c885be9b480e70e2"
 # Maximum pause when redialing a persistent peer (if zero, exponential backoff is used)
 persistent_peers_max_dial_period = "0s"
 # Time to wait before flushing messages out on the connection
