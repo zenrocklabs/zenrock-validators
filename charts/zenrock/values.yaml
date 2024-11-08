@@ -82,7 +82,7 @@ images:
 sidecar:
   enabled: false
   version: "1.1.1"
-  releases_url: "https://releases.gardia.zenrocklabs.io"
+  releases_url: "https://github.com/zenrocklabs/zrchain/releases/download"
   env:
     SIDECAR_CONFIG_FILE: "/root-data/sidecar/config.yaml"
   # Read config from a secret, the subpath should be named `config.yaml`
@@ -146,7 +146,7 @@ cosmovisor:
 zenrock:
   # Binary version at genesis time
   genesis_version: "4.7.1"
-  releases_url: "https://releases.gardia.zenrocklabs.io"
+  releases_url: "https://github.com/zenrocklabs/zrchain/releases/download"
   # It expects an RPC endpoint to query the genesis.json file
   genesis_url: "https://rpc.gardia.zenrocklabs.io/genesis"
   genesis_s3:
