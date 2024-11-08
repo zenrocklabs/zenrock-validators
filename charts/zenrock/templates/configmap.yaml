@@ -725,7 +725,7 @@ data:
     mkdir -p /root-data/sidecar/bin
 
     # fetch release binary
-    curl -s {{ .Values.zenrock.releases_url }}/v{{ .Values.zenrock.genesis_version }}/zenrockd \
+    curl -Ls {{ .Values.zenrock.releases_url }}/v{{ .Values.zenrock.genesis_version }}/zenrockd \
       -o /root-data/cosmovisor/genesis/bin/zenrockd
     chmod +x /root-data/cosmovisor/genesis/bin/zenrockd
 
@@ -781,7 +781,7 @@ data:
     if ! [ -f "/root-data/sidecar/bin/{{ .Values.sidecar.version }}" ]; then
       cd /root-data/sidecar/bin/
       rm -rf *
-      curl -s {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/validator_sidecar -o validator_sidecar
+      curl -Ls {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/validator_sidecar -o validator_sidecar
       chmod +x validator_sidecar
       touch {{ .Values.sidecar.version }}
     fi
