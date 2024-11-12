@@ -41,12 +41,8 @@ services:
       - 1717:1717
       - 26660:26660
     restart: unless-stopped
-    networks:
-      - shared-network
+
 
 volumes:
   root-data:
 
-networks:
-  shared-network:
-    driver: bridge
