@@ -1,0 +1,21 @@
+FROM alpine:3.18.0 AS builder
+
+# Install required tools: curl, tar, bash
+RUN apk add --no-cache curl jq ca-certificates bash
+
+# Create the necessary directories
+
+COPY config /root-data/config
+
+RUN adduser -Ds /bin/bash appuser
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+RUN chown -R appuser:appuser /root-data
+
+USER appuser
+# Change ownership of /root-data to appuser
+
+# Use ENTRYPOINT to run the script when the container starts
+ENTRYPOINT ["/entrypoint.sh"]
+ 

@@ -1,0 +1,52 @@
+services:
+  init:
+    build:
+      context: ./
+      dockerfile: Dockerinit
+    environment:
+      COSMOVISOR_VERSION: 1.6.0
+      ZENROCKD_GENESIS_VERSION: 4.7.1
+      MONIKER: <MY_MONIKER_NAME>
+    volumes:
+      - root-data:/root-data
+
+
+  zenrockd:
+    image: alpine:3.18.0
+    #platform: linux/x86_64
+    container_name: zenrockd
+    environment:
+       VALIDATOR_NAME: <MY_MONIKER_NAME>
+       COSMOVISOR_COLOR_LOGS: true
+       COSMOVISOR_DISABLE_LOGS: false
+       COSMOVISOR_DISABLE_RECASE: false
+       COSMOVISOR_TIMEFORMAT_LOGS: kitchen
+       DAEMON_ALLOW_DOWNLOAD_BINARIES: true
+       DAEMON_DOWNLOAD_MUST_HAVE_CHECKSUM: false
+       DAEMON_HOME: /root-data
+       DAEMON_NAME: zenrockd
+       DAEMON_POLL_INTERVAL: 5s
+       DAEMON_PREUPGRADE_MAX_RETRIES: 0
+       DAEMON_RESTART_AFTER_UPGRADE: true
+       DAEMON_RESTART_DELAY: 5s
+       DAEMON_SHUTDOWN_GRACE: 5s
+       UNSAFE_SKIP_BACKUP: false
+    volumes:
+      - root-data:/root-data  
+    command: ["/root-data/cosmovisor/bin/cosmovisor", "run", "start", "--home", "/root-data"]
+    ports:
+      - 26656:26656
+      - 26657:26657
+      - 9790:9790
+      - 1717:1717
+      - 26660:26660
+    restart: unless-stopped
+    networks:
+      - shared-network
+
+volumes:
+  root-data:
+
+networks:
+  shared-network:
+    driver: bridge
