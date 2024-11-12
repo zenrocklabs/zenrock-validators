@@ -8,7 +8,7 @@ Update:
     1. config/config.toml
     2. docker-compose.yaml
 
-And replace - MY_MONIKER_NAME - with your preferred name
+And replace - <MY_MONIKER_NAM> - with your preferred name
 
 ### Initializaiton
 
