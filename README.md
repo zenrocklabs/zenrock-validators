@@ -214,7 +214,7 @@ sidecar:
     operator_state_retriever_address: 0x148e80620b9464Fa0731467d504A2F760E7242C8
     operator_validator_address: <VALUE FROM STEP - zenvaloper address>
     register_on_startup: true
-    service_manager_address: 0xb48F00b89A4017f78794F35cb1ef540EDA5d201B
+    service_manager_address: 0xA52cc1900387C36117dEf80970156a17C182e008
     token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
     zr_chain_rpc_address: localhost:9790
 
