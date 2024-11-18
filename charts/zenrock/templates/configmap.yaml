@@ -40,6 +40,7 @@ data:
     # address of token to deposit tokens into when registering on startup
     token_strategy_addr: {{ .Values.sidecar.eigen_operator.token_strategy_addr }}
     service_manager_address: {{ .Values.sidecar.eigen_operator.service_manager_address }}
+    zr_chain_rpc_address: {{ .Values.sidecar.eigen_operator.zr_chain_rpc_address }}
 
   {{- end }}
   {{- if not .Values.sidecar.configFromSecret }}
