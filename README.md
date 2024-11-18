@@ -1,5 +1,6 @@
 # Zenrock Gardia Validator Node Setup
 
+
 This guide explains how to set up a validator node on the Zenrock Gardia blockchain 
 using Kubernetes and Helm.
 
