@@ -81,7 +81,7 @@ images:
 # Sidecar enables AVS
 sidecar:
   enabled: false
-  version: "5.3.2"
+  version: "5.3.3"
   releases_url: "https://github.com/zenrocklabs/zrchain/releases/download"
   env:
     SIDECAR_CONFIG_FILE: "/root-data/sidecar/config.yaml"
@@ -92,16 +92,25 @@ sidecar:
     grpc_port: 9191
     state_file: "cache.json"
     operator_config: "/root-data/sidecar/eigen_operator_config.yaml"
+    network: "testnet"
     eth_oracle:
       rpc:
         local: "http://127.0.0.1:8545"
         testnet: "TESTNET RPC..."
         mainnet: "MAINNET RPC..."
-      network: "testnet"
       contract_addrs:
-        service_manager: "0xb48F00b89A4017f78794F35cb1ef540EDA5d201B"
+        service_manager: "0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032"
         price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
         network_name: "Holešky Ethereum Testnet"
+    solana_rpc:
+      testnet: "https://api.testnet.solana.com"
+      mainnet: ""
+    proxy_rpc:
+      url: ""
+      user: ""
+      password: ""
+    neutrino:
+      path: "/root-data/neutrino"
   eigen_operator:
     keysFromSecret: "eigen-keys"
     aggregator_address: localhost:8090
@@ -112,14 +121,14 @@ sidecar:
     register_on_startup: true
     eth_rpc_url: http://localhost:8545
     eth_ws_url: ws://localhost:8545
-    avs_registry_coordinator_address: 0xD4BdE8DD7B82C04E4c1617B0F477f4F8B2CcdE2F
-    operator_state_retriever_address: 0x148e80620b9464Fa0731467d504A2F760E7242C8
+    avs_registry_coordinator_address: 0xFbB0cbF0d14C8BaE1f36Cd4Dff792ca412b72Af0
+    operator_state_retriever_address: 0xe7FDe0EFCECBbcC25F326EdC80E6B79c1482dAaB
     # Derived address from the ECDSA pub key for ethereum
-    operator_address: 0x860B6912C2d0337ef05bbC89b0C2CB6CbAEAB4A5
+    operator_address: ""
     # zenvaloper address of your validator
     operator_validator_address: ""
     token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
-    service_manager_address: 0xb48F00b89A4017f78794F35cb1ef540EDA5d201B
+    service_manager_address: 0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032
     zr_chain_rpc_address: localhost:9790
 
 

@@ -202,7 +202,7 @@ sidecar:
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
-    avs_registry_coordinator_address: 0xD4BdE8DD7B82C04E4c1617B0F477f4F8B2CcdE2F
+    avs_registry_coordinator_address: 0xFbB0cbF0d14C8BaE1f36Cd4Dff792ca412b72Af0
     enable_metrics: true
     enable_node_api: true
     eth_rpc_url: <HOLESKY ENDPOINT HERE>
@@ -211,10 +211,10 @@ sidecar:
     metrics_address: 0.0.0.0:9292
     node_api_address: 0.0.0.0:9191
     operator_address: <VALUE FROM STEP - ECDSA key>
-    operator_state_retriever_address: 0x148e80620b9464Fa0731467d504A2F760E7242C8
+    operator_state_retriever_address: 0xe7FDe0EFCECBbcC25F326EdC80E6B79c1482dAaB
     operator_validator_address: <VALUE FROM STEP - zenvaloper address>
     register_on_startup: true
-    service_manager_address: 0xA52cc1900387C36117dEf80970156a17C182e008
+    service_manager_address: 0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032
     token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
     zr_chain_rpc_address: localhost:9790
 
