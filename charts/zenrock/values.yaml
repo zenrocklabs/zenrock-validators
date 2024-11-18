@@ -81,7 +81,7 @@ images:
 # Sidecar enables AVS
 sidecar:
   enabled: false
-  version: "5.3.3"
+  version: "5.3.4"
   releases_url: "https://github.com/zenrocklabs/zrchain/releases/download"
   env:
     SIDECAR_CONFIG_FILE: "/root-data/sidecar/config.yaml"

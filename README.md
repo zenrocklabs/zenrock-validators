@@ -198,7 +198,7 @@ cosmovisor:
 
 sidecar:
   enabled: true
-  version: 5.3.2
+  version: 5.3.4
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
