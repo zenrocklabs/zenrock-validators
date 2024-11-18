@@ -197,7 +197,7 @@ cosmovisor:
 
 sidecar:
   enabled: true
-  version: 1.2.2
+  version: 5.3.2
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
@@ -215,6 +215,7 @@ sidecar:
     register_on_startup: true
     service_manager_address: 0xb48F00b89A4017f78794F35cb1ef540EDA5d201B
     token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
+    zr_chain_rpc_address: localhost:9790
 
 zenrock:
   chain_id: gardia-2
