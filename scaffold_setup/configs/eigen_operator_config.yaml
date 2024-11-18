@@ -8,8 +8,8 @@ operator_validator_address: OPERATOR_VALIDATOR_ADDRESS
 # EigenLayer Slasher contract address
 # This is the address of the contracts which are deployed in the anvil saved state
 # The saved eigenlayer state is located in tests/anvil/credible_squaring_avs_deployment_output.json
-avs_registry_coordinator_address: 0xD4BdE8DD7B82C04E4c1617B0F477f4F8B2CcdE2F
-operator_state_retriever_address: 0x148e80620b9464Fa0731467d504A2F760E7242C8
+avs_registry_coordinator_address: 0xFbB0cbF0d14C8BaE1f36Cd4Dff792ca412b72Af0
+operator_state_retriever_address: 0xe7FDe0EFCECBbcC25F326EdC80E6B79c1482dAaB
 
 # ETH RPC URL
 eth_rpc_url: ETH_RPC_URL
@@ -33,5 +33,5 @@ enable_node_api: true
 
 # address of token to deposit tokens into when registering on startup
 token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
-service_manager_address: 0xA52cc1900387C36117dEf80970156a17C182e008
+service_manager_address: 0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032
 zr_chain_rpc_address: localhost:9790
