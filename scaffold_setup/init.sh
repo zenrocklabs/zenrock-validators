@@ -5,7 +5,7 @@ set -e
 ZENROCK_GENESIS_VERSION='4.7.1'
 
 COSMOVISOR_VERSION='1.6.0'
-SIDECAR_VERSION='1.2.3'
+SIDECAR_VERSION='5.3.2'
 
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -57,7 +57,7 @@ fi
 
 echo "Downloading latest validator sidecar release"
 if ! [ -f "$user_path/sidecar/bin/validator_sidecar" ]; then
-    curl -s "https://releases.gardia.zenrocklabs.io/validator_sidecar-$SIDECAR_VERSION" \
+    curl -Ls "https://github.com/zenrocklabs/zrchain/releases/download/v$SIDECAR_VERSION/validator_sidecar" \
       -o "$user_path/sidecar/bin/validator_sidecar"
     chmod +x "$user_path/sidecar/bin/validator_sidecar"
     gecho "Validator sidecar setup completed in : $user_path/sidecar/bin/validator_sidecar"

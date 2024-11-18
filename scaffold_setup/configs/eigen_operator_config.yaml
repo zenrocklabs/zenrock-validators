@@ -34,3 +34,4 @@ enable_node_api: true
 # address of token to deposit tokens into when registering on startup
 token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
 service_manager_address: 0xb48F00b89A4017f78794F35cb1ef540EDA5d201B
+zr_chain_rpc_address: localhost:9790
