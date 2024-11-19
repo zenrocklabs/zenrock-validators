@@ -19,7 +19,7 @@ proxy_rpc:
   user: ""
   password: ""
 neutrino:
-  path: "/root-data/neutrino"
+  path: "/<APP-DIR>/neutrino"
 
 
 
