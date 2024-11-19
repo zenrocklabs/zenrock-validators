@@ -139,7 +139,7 @@ cd utils/val_addr
 
 ### Fund the Validator's account
 
-Transfer tokens to the validator's address. As per the note, contact the Zenrock team, in order to requests funds
+Transfer tokens to the validator's address. As per the note, contact the Zenrock team, in order to request funds.
 
 ### Create the validator
 
