@@ -19,6 +19,7 @@ proxy_rpc:
   user: ""
   password: ""
 neutrino:
+# root path to your validator folder
   path: "/<APP-DIR>/neutrino"
 
 
