@@ -19,7 +19,7 @@ proxy_rpc:
   user: ""
   password: ""
 neutrino:
-# root path to your validator folder
+# root path to your setup folder, where validator/sidecar configuration files/data resides
   path: "/<APP-DIR>/neutrino"
 
 
