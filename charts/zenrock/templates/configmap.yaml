@@ -519,9 +519,9 @@ data:
     # Set false for private or local networks
     addr_book_strict = true
     # Maximum number of inbound peers
-    max_num_inbound_peers = 40
+    max_num_inbound_peers = {{ .Values.zenrock.config.max_num_inbound_peers }}
     # Maximum number of outbound peers to connect to, excluding persistent peers
-    max_num_outbound_peers = 10
+    max_num_outbound_peers = {{ .Values.zenrock.config.max_num_outbound_peers }}
     # List of node IDs, to which a connection will be (re)established ignoring any existing limits
     unconditional_peer_ids = "{{ .Values.zenrock.config.unconditional_peer_ids }}"
     # Maximum pause when redialing a persistent peer (if zero, exponential backoff is used)

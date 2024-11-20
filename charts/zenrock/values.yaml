@@ -204,6 +204,8 @@ zenrock:
     statesync_trust_period: "168h0m0s"
     p2p_send_rate: 5120000
     p2p_recv_rate: 5120000
+    max_num_inbound_peers: 50
+    max_num_outbound_peers: 20
   env: {}
   configMapEnv: []
   resources:
