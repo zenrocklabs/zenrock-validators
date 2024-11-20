@@ -112,6 +112,7 @@ sidecar:
     neutrino:
       path: "/root-data/neutrino"
   eigen_operator:
+    production: true
     keysFromSecret: "eigen-keys"
     aggregator_address: localhost:8090
     enable_metrics: true

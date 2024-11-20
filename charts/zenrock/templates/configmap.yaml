@@ -8,7 +8,7 @@ data:
   eigen_operator_config.yaml: |
     register_operator_on_startup: {{ .Values.sidecar.eigen_operator.register_on_startup }}
     # this sets the logger level (true = info, false = debug)
-    production: true
+    production: {{ .Values.sidecar.eigen_operator.production }}
     operator_address: {{ .Values.sidecar.eigen_operator.operator_address }}
     operator_validator_address: {{ .Values.sidecar.eigen_operator.operator_validator_address }}
 
