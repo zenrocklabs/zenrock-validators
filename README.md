@@ -277,7 +277,7 @@ cosmovisor:
 
 sidecar:
   #To be updated
-  enabled: false
+  enabled: true
   version: 5.3.4
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
