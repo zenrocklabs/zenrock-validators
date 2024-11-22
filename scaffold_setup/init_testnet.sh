@@ -14,6 +14,7 @@ gecho() {
 }
 
 
+
 read -e -p "Enter the FULL path where you want to create the Application directory or where it exists: " user_path
     declare -g user_path
 
@@ -43,8 +44,8 @@ fi
 ##### Service setup ####
 service_setup() {
 
-cp $DIR/configs/eigen_operator_config.yaml "$user_path/sidecar/"
-cp $DIR/configs/config.yaml "$user_path/sidecar/"
+cp $DIR/configs_testnet/eigen_operator_config.yaml "$user_path/sidecar/"
+cp $DIR/configs_testnet/config.yaml "$user_path/sidecar/"
 
 echo "Downloading latest zenrockd release"
 if ! [ -f "$user_path/cosmovisor/genesis/bin/zenrockd" ]; then
@@ -72,9 +73,9 @@ fi
 
 cp -r $user_path/cosmovisor/config/config/node_key.json $user_path/config/
 cp -r $user_path/cosmovisor/config/config/priv_validator_key.json $user_path/config/
-cp -r $DIR/configs/app.toml $user_path/config/
-cp -r $DIR/configs/client.toml $user_path/config/
-cp -r $DIR/configs/config.toml $user_path/config/
+cp -r $DIR/configs_testnet/app.toml $user_path/config/
+cp -r $DIR/configs_testnet/client.toml $user_path/config/
+cp -r $DIR/configs_testnet/config.toml $user_path/config/
 mv $user_path/cosmovisor/config/data $user_path
 curl -s https://rpc.gardia.zenrocklabs.io/genesis | jq .result.genesis > $user_path/config/genesis.json
 sed -i "s|MY_VALIDATOR|$validator_name|g" $user_path/config/config.toml

@@ -1,0 +1,32 @@
+grpc_port: 9191
+state_file: "cache.json"
+operator_config: "EIGEN_OPERATOR_CONFIG"
+network: "testnet"
+eth_oracle:
+  rpc:
+    local: "http://127.0.0.1:8545"
+    testnet: "TESTNET_HOLESKY_ENDPOINT"
+    mainnet: "MAINNET_ENDPOINT"
+  contract_addrs:
+    service_manager: "<TBU>"
+    price_feed: "<TBU>"
+    network_name: "Holešky Ethereum Testnet"
+solana_rpc:
+  testnet: "https://api.testnet.solana.com"
+  mainnet: ""
+proxy_rpc:
+  url: ""
+  user: ""
+  password: ""
+neutrino:
+# root path to your setup folder, where validator/sidecar configuration files/data resides
+  path: "/<APP-DIR>/neutrino"
+
+
+
+
+
+
+
+
+

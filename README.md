@@ -184,6 +184,9 @@ Submit the validator creation transaction:
 
 Create a custom values file for your Helm chart configuration:
 
+
+# Mainnet
+
 ``` yaml
 nameOverride: my-validator
 fullnameOverride: my-validator
@@ -198,11 +201,12 @@ cosmovisor:
 
 sidecar:
   enabled: true
-  version: 5.3.4
+  releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
+  version: "5.3.8"
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
-    aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
-    avs_registry_coordinator_address: 0xFbB0cbF0d14C8BaE1f36Cd4Dff792ca412b72Af0
+    aggregator_address: avs-aggregator.diamond.zenrocklabs.io:8090
+    avs_registry_coordinator_address: 0xFbB0cbF0d14C8BaE1f36Cd4Dff792ca412b72Af0 <----------------
     enable_metrics: true
     enable_node_api: true
     eth_rpc_url: <HOLESKY ENDPOINT HERE>
@@ -211,11 +215,83 @@ sidecar:
     metrics_address: 0.0.0.0:9292
     node_api_address: 0.0.0.0:9191
     operator_address: <VALUE FROM STEP - ECDSA key>
-    operator_state_retriever_address: 0xe7FDe0EFCECBbcC25F326EdC80E6B79c1482dAaB
+    operator_state_retriever_address: 0xe7FDe0EFCECBbcC25F326EdC80E6B79c1482dAaB <----------------
     operator_validator_address: <VALUE FROM STEP - zenvaloper address>
     register_on_startup: true
-    service_manager_address: 0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032
-    token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
+    service_manager_address: 0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032 <----------------
+    token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9 <----------------
+    zr_chain_rpc_address: localhost:9790
+
+zenrock:
+  chain_id: diamond-1
+  releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
+  genesis_url: "https://rpc.diamond.zenrocklabs.io/genesis"
+  genesis_version: "5.3.8"
+  nodeKeyFromSecret: <validator-cometbft-keys>
+  config:
+    allow_duplicate_ip: true
+    external_address: ""
+    log_format: plain
+    log_level: info
+    moniker: <MY_VALIDATOR>
+    p2p_recv_rate: 512000000
+    p2p_send_rate: 512000000
+    persistent_peers: "a5c64669d5d5c27fcde2c37e89da57c6d0576a7b@sentry-1.diamond.zenrocklabs.io:26656,5ad8a5de6318529994da817043b268ef617e37ba@sentry-2.diamond.zenrocklabs.io:36656,4f93fec81eadc205dee1b63e766cc33d9f2e6767@sentry-3.diamond.zenrocklabs.io:46656,36840303211712d936647da0f74d1498a7e298d1@sentry-4.diamond.zenrocklabs.io:56656"
+    unconditional_peer_ids: "a5c64669d5d5c27fcde2c37e89da57c6d0576a7b,5ad8a5de6318529994da817043b268ef617e37ba,4f93fec81eadc205dee1b63e766cc33d9f2e6767,36840303211712d936647da0f74d1498a7e298d1"
+    pex: true
+    pruning: nothing
+    pruning_interval: "100"
+    pruning_keep_recent: "100000"
+  metrics:
+    enabled: true
+  persistence:
+    claimName: validator-data-1
+    enabled: true
+    existingClaim: false
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 2512Mi
+    requests:
+      cpu: 500m
+      memory: 1024Mi
+```
+
+# Testnet
+
+``` yaml
+nameOverride: my-validator
+fullnameOverride: my-validator
+
+images:
+  cosmovisor: alpine:3.20.2
+  init_zenrock: alpine:3.20.2
+  sidecar: alpine:3.20.2
+
+cosmovisor:
+  version: v1.6.0
+
+sidecar:
+  #To be updated
+  enabled: false
+  version: 5.3.4
+  configFromSecret: <validator-sidecar-config>
+  eigen_operator:
+    aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
+    avs_registry_coordinator_address: <TBU>
+    enable_metrics: true
+    enable_node_api: true
+    eth_rpc_url: <HOLESKY ENDPOINT HERE>
+    eth_ws_url: <HOLESKY ENDPOINT HERE>
+    keysFromSecret: <validator-eigen-keys>
+    metrics_address: 0.0.0.0:9292
+    node_api_address: 0.0.0.0:9191
+    operator_address: <VALUE FROM STEP - ECDSA key>
+    operator_state_retriever_address: <TBU>
+    operator_validator_address: <VALUE FROM STEP - zenvaloper address>
+    register_on_startup: true
+    service_manager_address: <TBU>
+    token_strategy_addr: <TBU>
     zr_chain_rpc_address: localhost:9790
 
 zenrock:
