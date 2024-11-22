@@ -89,6 +89,9 @@ stringData:
 ```
 3. (Optional) sidecar config
 
+
+# Testnet
+
 ``` yaml
 apiVersion: v1
 kind: Secret
@@ -200,13 +203,14 @@ cosmovisor:
   version: v1.6.0
 
 sidecar:
-  enabled: true
+  #TBU
+  enabled: false
   releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
   version: "5.3.8"
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.diamond.zenrocklabs.io:8090
-    avs_registry_coordinator_address: 0xFbB0cbF0d14C8BaE1f36Cd4Dff792ca412b72Af0 <----------------
+    avs_registry_coordinator_address: <TBU>
     enable_metrics: true
     enable_node_api: true
     eth_rpc_url: <HOLESKY ENDPOINT HERE>
@@ -215,11 +219,11 @@ sidecar:
     metrics_address: 0.0.0.0:9292
     node_api_address: 0.0.0.0:9191
     operator_address: <VALUE FROM STEP - ECDSA key>
-    operator_state_retriever_address: 0xe7FDe0EFCECBbcC25F326EdC80E6B79c1482dAaB <----------------
+    operator_state_retriever_address: <TBU>
     operator_validator_address: <VALUE FROM STEP - zenvaloper address>
     register_on_startup: true
-    service_manager_address: 0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032 <----------------
-    token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9 <----------------
+    service_manager_address: <TBU>
+    token_strategy_addr: <TBU>
     zr_chain_rpc_address: localhost:9790
 
 zenrock:
