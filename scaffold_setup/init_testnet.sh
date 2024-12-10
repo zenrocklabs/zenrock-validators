@@ -58,7 +58,7 @@ fi
 
 echo "Downloading latest validator sidecar release"
 if ! [ -f "$user_path/sidecar/bin/validator_sidecar" ]; then
-    curl -Ls "https://github.com/zenrocklabs/zrchain/releases/download/v$SIDECAR_VERSION/validator_sidecar" \
+    curl -Ls "https://github.com/Zenrock-Foundation/zrchain/releases/download/v$SIDECAR_VERSION/validator_sidecar" \
       -o "$user_path/sidecar/bin/validator_sidecar"
     chmod +x "$user_path/sidecar/bin/validator_sidecar"
     gecho "Validator sidecar setup completed in : $user_path/sidecar/bin/validator_sidecar"
