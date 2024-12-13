@@ -112,6 +112,16 @@ stringData:
             service_manager: "0xa559CDb9e029fc4078170122eBf7A3e622a764E4"
             price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
             network_name: "Holešky Ethereum Testnet"
+        solana_rpc:
+            testnet: "https://api.testnet.solana.com"
+            mainnet: ""
+        proxy_rpc:
+          url: ""
+          user: ""
+          password: ""
+        neutrino:
+          path: "/root-data/neutrino"
+
 ```
 This configuration can be set in the Helm chart values, but if you want to encrypt any sensitive data such as 
 RPC endpoint tokens, you can use this secret.
