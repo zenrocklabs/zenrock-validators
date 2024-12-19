@@ -1,7 +1,7 @@
 # Zenrock Gardia Validator Node Setup
 
 
-This guide explains how to set up a validator node on the Zenrock Gardia blockchain 
+This guide explains how to set up a validator node on the Zenrock Gardia blockchain
 using Kubernetes and Helm.
 
 Note: Funds for the validators would have to be requested from the Zenrock team. Do not use the faucet for it!
@@ -52,7 +52,7 @@ cat /tmp/my-validator/config/priv_validator_key.json
 
 
 ### Write keys in kubernetes secrets
-The keys need to be available in Kubernetes. Below is an example of how to store them in Kubernetes Secrets, 
+The keys need to be available in Kubernetes. Below is an example of how to store them in Kubernetes Secrets,
 which will be referenced in the Helm chart.
 It's recommended to encrypt sensitive secrets using tools like SOPS.
 
@@ -123,7 +123,7 @@ stringData:
           path: "/root-data/neutrino"
 
 ```
-This configuration can be set in the Helm chart values, but if you want to encrypt any sensitive data such as 
+This configuration can be set in the Helm chart values, but if you want to encrypt any sensitive data such as
 RPC endpoint tokens, you can use this secret.
 
 
@@ -135,7 +135,7 @@ https://releases.gardia.zenrocklabs.io
 e.g. with latest release ( of the time of writing the documentation ) you'd download:
 
 ``` sh
-sudo curl -o zenrockd https://releases.gardia.zenrocklabs.io/zenrockd-4.7.1
+sudo curl -Ls https://github.com/Zenrock-Foundation/zrchain/releases/download/v5.5.0/zenrockd -o zenrockd
 ```
 
 Create a zenrock account and note the address generated.
@@ -183,6 +183,19 @@ Replace "PUB_KEY" with your validator's public key, which can be obtained runnin
 
 
 Submit the validator creation transaction:
+
+
+# Mainnet
+
+``` sh
+./zenrockd tx validation create-validator [path/to/validator-info.json] \
+    --node https://rpc.diamond.zenrocklabs.io \
+    --gas-prices 10000urock \
+    --from my-validator \
+    --chain-id diamond-1
+```
+
+# Testnet
 
 ``` sh
 ./zenrockd tx validation create-validator [path/to/validator-info.json] \
@@ -351,6 +364,14 @@ helm install zenrock-validator zenrock/zenrock -f custom_values.yaml
 ```
 
 ## Post-Setup Steps
+
+- If you don't want to run a full ( Archive ) node, feel free to configure the pruning in the custom values file ( or in app.toml if you're usign systemd services)
+
+```
+    pruning: nothing
+    pruning_interval: "100"
+    pruning_keep_recent: "100000"
+```
 
 - Monitor the node's status and performance regularly.
 - Participate in the Gardia community by following social media channels, forums, and Discord to stay informed about network updates and proposals.
