@@ -22,7 +22,29 @@ helm repo add zenrock https://zenrocklabs.github.io/zenrock-validators/
 
 ### Generation of keys
 We provide scripts in the utils folder for generating the required keys for the validator.
+### Compiling ECDSA and BLS Based on CPU Architecture
+#### To compile ECDSA and BLS for the specific CPU architecture, follow these steps:
+### For ECDSA:
 
+```bash
+cd utils/keygen/ecdsa
+go build -o ecdsa2 main.go
+
+```
+###  For BLS:
+```bash
+cd utils/keygen/bls
+go build -o bls main.go
+```
+#### Checking Architecture (ARM vs AMD)
+Before building, verify the architecture of the generated binary (ARM or AMD) using the following commands
+```
+cd utils/keygen/ecdsa
+file ecdsa
+cd utils/keygen/bls
+file bls
+```
+* Note: This will help ensure that you are using the correct binary for your system's architecture.
 ### ECDSA key
 The ECDSA key is used by the eigen operator.
 
@@ -30,6 +52,9 @@ The ECDSA key is used by the eigen operator.
 cd utils/keygen/ecdsa
 ./ecdsa --password mypassword
 ```
+
+:
+
 
 Once the ECDSA key is generated, fund it with tokens on the Holesky network.
 
