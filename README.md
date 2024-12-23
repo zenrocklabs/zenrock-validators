@@ -200,7 +200,7 @@ Submit the validator creation transaction:
 ``` sh
 ./zenrockd tx validation create-validator [path/to/validator-info.json] \
     --node https://rpc.gardia.zenrocklabs.io \
-    --gas-prices 10000urock \
+    --fees 500000 urock \
     --from my-validator \
     --chain-id gardia-2
 ```
