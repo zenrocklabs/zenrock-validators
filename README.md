@@ -161,7 +161,7 @@ Create a file named `validator-info.json` with the following content, replacing 
 ``` json
 {
     "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"PUB_KEY"},
-    "amount": "1000000000000urock",
+    "amount": "1000000000urock",
     "moniker": "my-validator",
     "identity": "optional identity signature (ex. UPort or Keybase)",
     "website": "validator's (optional) website",
@@ -190,7 +190,7 @@ Submit the validator creation transaction:
 ``` sh
 ./zenrockd tx validation create-validator [path/to/validator-info.json] \
     --node https://rpc.diamond.zenrocklabs.io \
-    --gas-prices 10000urock \
+    --fees 500000 urock \
     --from my-validator \
     --chain-id diamond-1
 ```
