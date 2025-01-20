@@ -130,7 +130,7 @@ RPC endpoint tokens, you can use this secret.
 ### Zenrock account
 The binary releases can be downloaded from here:
 
-https://releases.gardia.zenrocklabs.io
+https://github.com/Zenrock-Foundation/zrchain/releases
 
 e.g. with latest release ( of the time of writing the documentation ) you'd download:
 
@@ -202,7 +202,7 @@ Submit the validator creation transaction:
     --node https://rpc.gardia.zenrocklabs.io \
     --fees 500000urock \
     --from my-validator \
-    --chain-id gardia-2
+    --chain-id gardia-3
 ```
 
 
@@ -301,7 +301,7 @@ cosmovisor:
 sidecar:
   #To be updated
   enabled: true
-  version: 5.3.10
+  version: 5.3.8
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
@@ -322,7 +322,7 @@ sidecar:
     zr_chain_rpc_address: localhost:9790
 
 zenrock:
-  chain_id: gardia-2
+  chain_id: gardia-3
   nodeKeyFromSecret: <validator-cometbft-keys>
   config:
     allow_duplicate_ip: true
@@ -339,7 +339,7 @@ zenrock:
     pruning_interval: "100"
     pruning_keep_recent: "100000"
   genesis_url: https://rpc.gardia.zenrocklabs.io/genesis
-  genesis_version: 4.7.1
+  genesis_version: 5.3.8
   metrics:
     enabled: true
   persistence:
@@ -368,9 +368,9 @@ helm install zenrock-validator zenrock/zenrock -f custom_values.yaml
 - If you don't want to run a full ( Archive ) node, feel free to configure the pruning in the custom values file ( or in app.toml if you're usign systemd services)
 
 ```
-    pruning: nothing
-    pruning_interval: "100"
-    pruning_keep_recent: "100000"
+    pruning: custom
+    pruning_interval: "50"
+    pruning_keep_recent: "100"
 ```
 
 - Monitor the node's status and performance regularly.
