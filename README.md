@@ -107,18 +107,24 @@ stringData:
             local: "http://127.0.0.1:8545"
             testnet: "https://rpc-endpoint-holesky-here"  # Replace this endpoint with a valid one
             mainnet: "https://rpc-endpoint-mainnet-here"  # Replace this endpoint with a valid one
-          network: "testnet"
           contract_addrs:
             service_manager: "0xa559CDb9e029fc4078170122eBf7A3e622a764E4"
-            price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
-            network_name: "Holešky Ethereum Testnet"
+            price_feeds:
+              btc: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
+              eth: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+            zenbtc_controller:
+              ethereum:
+                testnet: "0x912D79F8d489d0d007aBE0E26fD5d2f06BA4A2AA"
+          network_name:
+            mainnet: "Ethereum Mainnet"
+            testnet: "Holešky Ethereum Testnet"
         solana_rpc:
-            testnet: "https://api.testnet.solana.com"
-            mainnet: ""
+          testnet: "https://api.testnet.solana.com"
+          mainnet: ""
         proxy_rpc:
-          url: ""
-          user: ""
-          password: ""
+          url: #To be provided by the Zenrock team
+          user: #To be provided by the Zenrock team
+          password: #To be provided by the Zenrock team
         neutrino:
           path: "/root-data/neutrino"
 
@@ -301,7 +307,7 @@ cosmovisor:
 sidecar:
   #To be updated
   enabled: true
-  version: 5.3.8
+  version: 5.8.7
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
