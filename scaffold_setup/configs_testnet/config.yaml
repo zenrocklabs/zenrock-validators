@@ -1,3 +1,4 @@
+enabled: true
 grpc_port: 9191
 state_file: "cache.json"
 operator_config: "EIGEN_OPERATOR_CONFIG"
