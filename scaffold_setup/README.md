@@ -5,14 +5,14 @@
 
 **Pruned Node Requirements:**
 - CPU: 4-core processor (x86_64)
-- RAM: 16GB DDR4
+- RAM: 8GB DDR4 (Recommended 16 GB )
 - Storage: 200-500GB SSD (NVMe preferred)
 - Network: 1Gbps connection
 
 
 **Archive Node Requirements:**
 - CPU: 8-core processor (x86_64)
-- RAM: 32GB DDR4
+- RAM: 16 GB DDR4 (Recommended 32 GB )
 - Storage: 1-2TB NVMe SSD
 - Network: 1Gbps connection
 
