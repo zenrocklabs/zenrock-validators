@@ -1,6 +1,21 @@
 
 # Manual setup
 
+## Requirements
+
+**Pruned Node Requirements:**
+- CPU: 4-core processor (x86_64)
+- RAM: 16GB DDR4
+- Storage: 200-500GB SSD (NVMe preferred)
+- Network: 1Gbps connection
+
+
+**Archive Node Requirements:**
+- CPU: 8-core processor (x86_64)
+- RAM: 32GB DDR4
+- Storage: 1-2TB NVMe SSD
+- Network: 1Gbps connection
+
 
 ## Scaffold setup
 Execute either :
