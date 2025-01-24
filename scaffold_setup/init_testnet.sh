@@ -2,10 +2,10 @@
 set -e
 
 #This version should not be changed, it is the version used at genesis time
-ZENROCK_GENESIS_VERSION='4.7.1'
+ZENROCK_GENESIS_VERSION='5.3.8'
 
 COSMOVISOR_VERSION='1.6.0'
-SIDECAR_VERSION='5.3.2'
+SIDECAR_VERSION='5.8.7'
 
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -49,7 +49,7 @@ cp $DIR/configs_testnet/config.yaml "$user_path/sidecar/"
 
 echo "Downloading latest zenrockd release"
 if ! [ -f "$user_path/cosmovisor/genesis/bin/zenrockd" ]; then
-    curl -s "https://releases.gardia.zenrocklabs.io/zenrockd-$ZENROCK_GENESIS_VERSION" \
+    curl -Ls "https://github.com/Zenrock-Foundation/zrchain/releases/download/v$ZENROCK_GENESIS_VERSION/zenrockd" \
       -o "$user_path/cosmovisor/genesis/bin/zenrockd"
     chmod +x "$user_path/cosmovisor/genesis/bin/zenrockd"
     gecho "Zenrockd setup completed in : $user_path/cosmovisor/genesis/bin/zenrockd"

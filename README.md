@@ -132,18 +132,24 @@ stringData:
             local: "http://127.0.0.1:8545"
             testnet: "https://rpc-endpoint-holesky-here"  # Replace this endpoint with a valid one
             mainnet: "https://rpc-endpoint-mainnet-here"  # Replace this endpoint with a valid one
-          network: "testnet"
           contract_addrs:
             service_manager: "0xa559CDb9e029fc4078170122eBf7A3e622a764E4"
-            price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
-            network_name: "Holešky Ethereum Testnet"
+            price_feeds:
+              btc: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
+              eth: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+            zenbtc_controller:
+              ethereum:
+                testnet: "0x912D79F8d489d0d007aBE0E26fD5d2f06BA4A2AA"
+          network_name:
+            mainnet: "Ethereum Mainnet"
+            testnet: "Holešky Ethereum Testnet"
         solana_rpc:
-            testnet: "https://api.testnet.solana.com"
-            mainnet: ""
+          testnet: "https://api.testnet.solana.com"
+          mainnet: ""
         proxy_rpc:
-          url: ""
-          user: ""
-          password: ""
+          url: #To be provided by the Zenrock team
+          user: #To be provided by the Zenrock team
+          password: #To be provided by the Zenrock team
         neutrino:
           path: "/root-data/neutrino"
 
@@ -155,7 +161,7 @@ RPC endpoint tokens, you can use this secret.
 ### Zenrock account
 The binary releases can be downloaded from here:
 
-https://releases.gardia.zenrocklabs.io
+https://github.com/Zenrock-Foundation/zrchain/releases
 
 e.g. with latest release ( of the time of writing the documentation ) you'd download:
 
@@ -186,7 +192,7 @@ Create a file named `validator-info.json` with the following content, replacing 
 ``` json
 {
     "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"PUB_KEY"},
-    "amount": "1000000000000urock",
+    "amount": "1000000000urock",
     "moniker": "my-validator",
     "identity": "optional identity signature (ex. UPort or Keybase)",
     "website": "validator's (optional) website",
@@ -215,7 +221,7 @@ Submit the validator creation transaction:
 ``` sh
 ./zenrockd tx validation create-validator [path/to/validator-info.json] \
     --node https://rpc.diamond.zenrocklabs.io \
-    --gas-prices 10000urock \
+    --fees 500000urock \
     --from my-validator \
     --chain-id diamond-1
 ```
@@ -225,9 +231,9 @@ Submit the validator creation transaction:
 ``` sh
 ./zenrockd tx validation create-validator [path/to/validator-info.json] \
     --node https://rpc.gardia.zenrocklabs.io \
-    --gas-prices 10000urock \
+    --fees 500000urock \
     --from my-validator \
-    --chain-id gardia-2
+    --chain-id gardia-3
 ```
 
 
@@ -326,7 +332,7 @@ cosmovisor:
 sidecar:
   #To be updated
   enabled: true
-  version: 5.3.10
+  version: 5.8.7
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
@@ -347,7 +353,7 @@ sidecar:
     zr_chain_rpc_address: localhost:9790
 
 zenrock:
-  chain_id: gardia-2
+  chain_id: gardia-3
   nodeKeyFromSecret: <validator-cometbft-keys>
   config:
     allow_duplicate_ip: true
@@ -364,7 +370,7 @@ zenrock:
     pruning_interval: "100"
     pruning_keep_recent: "100000"
   genesis_url: https://rpc.gardia.zenrocklabs.io/genesis
-  genesis_version: 4.7.1
+  genesis_version: 5.3.8
   metrics:
     enabled: true
   persistence:
@@ -393,9 +399,9 @@ helm install zenrock-validator zenrock/zenrock -f custom_values.yaml
 - If you don't want to run a full ( Archive ) node, feel free to configure the pruning in the custom values file ( or in app.toml if you're usign systemd services)
 
 ```
-    pruning: nothing
-    pruning_interval: "100"
-    pruning_keep_recent: "100000"
+    pruning: custom
+    pruning_interval: "50"
+    pruning_keep_recent: "100"
 ```
 
 - Monitor the node's status and performance regularly.

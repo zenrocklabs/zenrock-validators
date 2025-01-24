@@ -81,8 +81,8 @@ images:
 # Sidecar enables AVS
 sidecar:
   enabled: false
-  version: "5.3.4"
-  releases_url: "https://github.com/zenrocklabs/zrchain/releases/download"
+  version: "5.3.8"
+  releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
   env:
     SIDECAR_CONFIG_FILE: "/root-data/sidecar/config.yaml"
   # Read config from a secret, the subpath should be named `config.yaml`
@@ -146,7 +146,7 @@ cosmovisor:
     DAEMON_SHUTDOWN_GRACE: "5s"
     DAEMON_POLL_INTERVAL: "5s"
     DAEMON_DATA_BACKUP_DIR: ""
-    UNSAFE_SKIP_BACKUP: false
+    UNSAFE_SKIP_BACKUP: true
     DAEMON_PREUPGRADE_MAX_RETRIES: 0
     COSMOVISOR_DISABLE_LOGS: false
     COSMOVISOR_COLOR_LOGS: true
@@ -156,8 +156,8 @@ cosmovisor:
 
 zenrock:
   # Binary version at genesis time
-  genesis_version: "4.7.1"
-  releases_url: "https://github.com/zenrocklabs/zrchain/releases/download"
+  genesis_version: "5.3.8"
+  releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
   # It expects an RPC endpoint to query the genesis.json file
   genesis_url: "https://rpc.gardia.zenrocklabs.io/genesis"
   genesis_s3:
@@ -167,7 +167,7 @@ zenrock:
   #   - priv_validator_key.json
   #   - node_key.json
   nodeKeyFromSecret: ""
-  chain_id: "gardia-2"
+  chain_id: "gardia-3"
   # Start node from latest snapshot
   snapshot:
     enabled: false
