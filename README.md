@@ -99,6 +99,7 @@ metadata:
     name: validator-sidecar-config
 stringData:
     config.yaml: |
+        enabled: true
         grpc_port: 9191
         state_file: "cache.json"
         operator_config: "/root-data/sidecar/eigen_operator_config.yaml"
