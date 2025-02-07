@@ -129,9 +129,6 @@ sidecar:
     # zenvaloper address of your validator
     operator_validator_address: ""
     token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
-    service_manager_address: 0x3AD648DfE0a6D80745ab2Ec97CB67c56bfBEc032
-    zr_chain_rpc_address: localhost:9790
-
 
 cosmovisor:
   version: "v1.6.0"
