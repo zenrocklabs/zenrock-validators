@@ -123,11 +123,13 @@ kind: Secret
 metadata:
     name: validator-sidecar-config
 stringData:
-    config.yaml: |
+    config.yaml: |  
         enabled: true
         grpc_port: 9191
+        zrchain_rpc: "localhost:9790"
         state_file: "cache.json"
         operator_config: "/root-data/sidecar/eigen_operator_config.yaml"
+        network: "testnet"
         eth_oracle:
           rpc:
             local: "http://127.0.0.1:8545"
@@ -138,9 +140,12 @@ stringData:
             price_feeds:
               btc: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
               eth: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
-            zenbtc_controller:
-              ethereum:
-                testnet: "0x912D79F8d489d0d007aBE0E26fD5d2f06BA4A2AA"
+            zenbtc:
+              controller:
+                testnet: "0xaCE3634AAd9bCC48ef6A194f360F7ACe51F7d9f1"
+              token:
+                ethereum:
+                  testnet: "0xfA32a2D7546f8C7c229F94E693422A786DaE5E18"
           network_name:
             mainnet: "Ethereum Mainnet"
             testnet: "Holešky Ethereum Testnet"
@@ -333,7 +338,7 @@ cosmovisor:
 sidecar:
   #To be updated
   enabled: true
-  version: 5.8.7
+  version: 5.16.9
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
@@ -348,10 +353,9 @@ sidecar:
     register_on_startup: true
     operator_address: <VALUE FROM STEP - ECDSA key>
     operator_validator_address: <VALUE FROM STEP - zenvaloper address>
+    avs_registry_coordinator_address: 0xdc3A1b2a44D18c6B98a1d6c8C042247d2F5AC722
     operator_state_retriever_address: 0xdB55356826a16DfFBD86ba334b84fC4E37113d97
-    service_manager_address: 0xa559CDb9e029fc4078170122eBf7A3e622a764E4
     token_strategy_addr: 0x80528D6e9A2BAbFc766965E0E26d5aB08D9CFaF9
-    zr_chain_rpc_address: localhost:9790
 
 zenrock:
   chain_id: gardia-4
