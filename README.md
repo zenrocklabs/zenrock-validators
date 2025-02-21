@@ -234,7 +234,7 @@ Submit the validator creation transaction:
     --node https://rpc.gardia.zenrocklabs.io \
     --fees 500000urock \
     --from my-validator \
-    --chain-id gardia-3
+    --chain-id gardia-4
 ```
 
 
@@ -354,7 +354,7 @@ sidecar:
     zr_chain_rpc_address: localhost:9790
 
 zenrock:
-  chain_id: gardia-3
+  chain_id: gardia-4
   nodeKeyFromSecret: <validator-cometbft-keys>
   config:
     allow_duplicate_ip: true

@@ -164,7 +164,7 @@ zenrock:
   #   - priv_validator_key.json
   #   - node_key.json
   nodeKeyFromSecret: ""
-  chain_id: "gardia-3"
+  chain_id: "gardia-4"
   # Start node from latest snapshot
   snapshot:
     enabled: false
