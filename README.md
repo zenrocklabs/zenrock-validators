@@ -160,6 +160,53 @@ stringData:
           path: "/root-data/neutrino"
 
 ```
+
+# Mainnet
+
+``` yaml
+apiVersion: v1
+kind: Secret
+metadata:
+    name: validator-sidecar-config
+stringData:
+    config.yaml: |  
+        enabled: true
+        grpc_port: 9191
+        zrchain_rpc: "localhost:9790"
+        state_file: "cache.json"
+        operator_config: "/root-data/sidecar/eigen_operator_config.yaml"
+        network: "mainnet"
+        eth_oracle:
+          rpc:
+            local: "http://127.0.0.1:8545"
+            testnet: "https://rpc-endpoint-holesky-here"  # Replace this endpoint with a valid one
+            mainnet: "https://rpc-endpoint-mainnet-here"  # Replace this endpoint with a valid one
+          contract_addrs:
+            service_manager: "0x4ca852BD78D9B7295874A7D223023Bff011b7EB3"
+            price_feeds:
+              btc: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
+              eth: "﻿"
+            zenbtc:
+              controller:
+                testnet: "0xa87bE298115bE701A12F34F9B4585586dF052008"
+              token:
+                ethereum:
+                  testnet: "0x2fE9754d5D28bac0ea8971C0Ca59428b8644C776"
+          network_name:
+            mainnet: "Ethereum Mainnet"
+            testnet: "Holešky Ethereum Testnet"
+        solana_rpc:
+          testnet: "https://api.testnet.solana.com"
+          mainnet: "https://api.mainnet-beta.solana.com/"
+        proxy_rpc:
+          url: #To be provided by the Zenrock team
+          user: #To be provided by the Zenrock team
+          password: #To be provided by the Zenrock team
+        neutrino:
+          path: "/root-data/neutrino"
+
+```
+
 This configuration can be set in the Helm chart values, but if you want to encrypt any sensitive data such as
 RPC endpoint tokens, you can use this secret.
 
@@ -263,28 +310,25 @@ cosmovisor:
   version: v1.6.0
 
 sidecar:
-  #TBU
-  enabled: false
   releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
-  version: "5.3.8"
+  version: "5.6.12"
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
+    keysFromSecret: "<validator-eigen-keys>"
     aggregator_address: avs-aggregator.diamond.zenrocklabs.io:8090
-    avs_registry_coordinator_address: <TBU>
+    eth_rpc_url: <ETH ENDPOINT HERE>
+    eth_ws_url: <ETH ENDPOINT HERE>
     enable_metrics: true
-    enable_node_api: true
-    eth_rpc_url: <HOLESKY ENDPOINT HERE>
-    eth_ws_url: <HOLESKY ENDPOINT HERE>
-    keysFromSecret: <validator-eigen-keys>
     metrics_address: 0.0.0.0:9292
+    enable_node_api: true
     node_api_address: 0.0.0.0:9191
-    operator_address: <VALUE FROM STEP - ECDSA key>
-    operator_state_retriever_address: <TBU>
-    operator_validator_address: <VALUE FROM STEP - zenvaloper address>
     register_on_startup: true
-    service_manager_address: <TBU>
-    token_strategy_addr: <TBU>
-    zr_chain_rpc_address: localhost:9790
+    operator_address: <VALUE FROM STEP - ECDSA key>
+    operator_validator_address: <VALUE FROM STEP - zenvaloper address>
+    avs_registry_coordinator_address: 0xFbFECE8f29f499c32206d8bFfA57da2b124790C7
+    operator_state_retriever_address: 0x03d0452e70711f169eB6B6F5Ab33d8571c313ef6
+    token_strategy_addr: 0xa5430Ca83713F877B77b54d5A24FD3D230DF854B
+
 
 zenrock:
   chain_id: diamond-1
