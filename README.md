@@ -142,10 +142,10 @@ stringData:
               eth: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
             zenbtc:
               controller:
-                mainnet: "0xaCE3634AAd9bCC48ef6A194f360F7ACe51F7d9f1"
+                testnet: "0xaCE3634AAd9bCC48ef6A194f360F7ACe51F7d9f1"
               token:
                 ethereum:
-                  mainnet: "0xfA32a2D7546f8C7c229F94E693422A786DaE5E18"
+                  testnet: "0xfA32a2D7546f8C7c229F94E693422A786DaE5E18"
           network_name:
             mainnet: "Ethereum Mainnet"
             testnet: "Holešky Ethereum Testnet"
@@ -188,10 +188,10 @@ stringData:
               eth: "﻿0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
             zenbtc:
               controller:
-                testnet: "0xa87bE298115bE701A12F34F9B4585586dF052008"
+                mainnet: "0xa87bE298115bE701A12F34F9B4585586dF052008"
               token:
                 ethereum:
-                  testnet: "0x2fE9754d5D28bac0ea8971C0Ca59428b8644C776"
+                  mainnet: "0x2fE9754d5D28bac0ea8971C0Ca59428b8644C776"
           network_name:
             mainnet: "Ethereum Mainnet"
             testnet: "Holešky Ethereum Testnet"
