@@ -185,7 +185,7 @@ stringData:
             service_manager: "0x4ca852BD78D9B7295874A7D223023Bff011b7EB3"
             price_feeds:
               btc: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
-              eth: "﻿"
+              eth: "﻿0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
             zenbtc:
               controller:
                 testnet: "0xa87bE298115bE701A12F34F9B4585586dF052008"
@@ -199,9 +199,9 @@ stringData:
           testnet: "https://api.testnet.solana.com"
           mainnet: "https://api.mainnet-beta.solana.com/"
         proxy_rpc:
-          url: #To be provided by the Zenrock team
-          user: #To be provided by the Zenrock team
-          password: #To be provided by the Zenrock team
+          url:
+          user:
+          password:
         neutrino:
           path: "/root-data/neutrino"
 
@@ -311,7 +311,7 @@ cosmovisor:
 
 sidecar:
   releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
-  version: "5.6.12"
+  version: "5.16.21"
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     keysFromSecret: "<validator-eigen-keys>"
