@@ -142,10 +142,10 @@ stringData:
               eth: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
             zenbtc:
               controller:
-                testnet: "0xaCE3634AAd9bCC48ef6A194f360F7ACe51F7d9f1"
+                mainnet: "0xaCE3634AAd9bCC48ef6A194f360F7ACe51F7d9f1"
               token:
                 ethereum:
-                  testnet: "0xfA32a2D7546f8C7c229F94E693422A786DaE5E18"
+                  mainnet: "0xfA32a2D7546f8C7c229F94E693422A786DaE5E18"
           network_name:
             mainnet: "Ethereum Mainnet"
             testnet: "Holešky Ethereum Testnet"
