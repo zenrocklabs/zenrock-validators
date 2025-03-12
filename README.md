@@ -53,9 +53,6 @@ cd utils/keygen/ecdsa
 ./ecdsa --password mypassword
 ```
 
-:
-
-
 Once the ECDSA key is generated, fund it with tokens on the Holesky network.
 
 ### BLS key
