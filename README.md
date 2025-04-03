@@ -381,7 +381,7 @@ cosmovisor:
 sidecar:
   #To be updated
   enabled: true
-  version: 5.16.9
+  version: 5.16.12
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
