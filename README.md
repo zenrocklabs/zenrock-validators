@@ -130,35 +130,20 @@ stringData:
         state_file: "cache.json"
         operator_config: "/root-data/sidecar/eigen_operator_config.yaml"
         network: "testnet"
-        eth_oracle:
-          rpc:
+        eth_rpc:
             local: "http://127.0.0.1:8545"
             testnet: "https://rpc-endpoint-holesky-here"  # Replace this endpoint with a valid one
             mainnet: "https://rpc-endpoint-mainnet-here"  # Replace this endpoint with a valid one
-          contract_addrs:
-            service_manager: "0xa559CDb9e029fc4078170122eBf7A3e622a764E4"
-            price_feeds:
-              btc: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
-              eth: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
-            zenbtc:
-              controller:
-                testnet: "0xaCE3634AAd9bCC48ef6A194f360F7ACe51F7d9f1"
-              token:
-                ethereum:
-                  testnet: "0xfA32a2D7546f8C7c229F94E693422A786DaE5E18"
-          network_name:
-            mainnet: "Ethereum Mainnet"
-            testnet: "Holešky Ethereum Testnet"
+        # Contract addresses + more are now defined in shared/types.go
         solana_rpc:
-          testnet: "https://api.testnet.solana.com"
-          mainnet: ""
+            testnet: "https://api.testnet.solana.com"
+            mainnet: "https://api.mainnet-beta.solana.com/"
+        neutrino:
+          path: "/root-data/neutrino"
         proxy_rpc:
           url: #To be provided by the Zenrock team
           user: #To be provided by the Zenrock team
           password: #To be provided by the Zenrock team
-        neutrino:
-          path: "/root-data/neutrino"
-
 ```
 
 # Mainnet
@@ -381,7 +366,7 @@ cosmovisor:
 sidecar:
   #To be updated
   enabled: true
-  version: 5.16.12
+  version: 6.1.16
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
