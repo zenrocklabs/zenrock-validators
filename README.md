@@ -161,32 +161,13 @@ stringData:
         state_file: "cache.json"
         operator_config: "/root-data/sidecar/eigen_operator_config.yaml"
         network: "mainnet"
-        eth_oracle:
-          rpc:
-            local: "http://127.0.0.1:8545"
-            testnet: "https://rpc-endpoint-holesky-here"  # Replace this endpoint with a valid one
-            mainnet: "https://rpc-endpoint-mainnet-here"  # Replace this endpoint with a valid one
-          contract_addrs:
-            service_manager: "0x4ca852BD78D9B7295874A7D223023Bff011b7EB3"
-            price_feeds:
-              btc: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
-              eth: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
-            zenbtc:
-              controller:
-                mainnet: "0xa87bE298115bE701A12F34F9B4585586dF052008"
-              token:
-                ethereum:
-                  mainnet: "0x2fE9754d5D28bac0ea8971C0Ca59428b8644C776"
-          network_name:
-            mainnet: "Ethereum Mainnet"
-            testnet: "Holešky Ethereum Testnet"
+        eth_rpc:
+          # local: "http://127.0.0.1:8545"
+          testnet: "https://rpc-endpoint-holesky-here"  # Replace this endpoint with a valid one
+          mainnet: "https://rpc-endpoint-mainnet-here"  # Replace this endpoint with a valid one
         solana_rpc:
           testnet: "https://api.testnet.solana.com"
           mainnet: "https://api.mainnet-beta.solana.com/"
-        proxy_rpc:
-          url:
-          user:
-          password:
         neutrino:
           path: "/root-data/neutrino"
 ```
