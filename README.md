@@ -276,7 +276,7 @@ cosmovisor:
 
 sidecar:
   releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
-  version: "5.16.21"
+  version: "6.1.23"
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     keysFromSecret: "<validator-eigen-keys>"
@@ -347,7 +347,7 @@ cosmovisor:
 sidecar:
   #To be updated
   enabled: true
-  version: 6.1.16
+  version: 6.3.3
   configFromSecret: <validator-sidecar-config>
   eigen_operator:
     aggregator_address: avs-aggregator.gardia.zenrocklabs.io:8090
