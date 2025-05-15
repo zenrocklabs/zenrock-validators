@@ -377,8 +377,8 @@ zenrock:
     moniker: <MY_VALIDATOR>
     p2p_recv_rate: 512000000
     p2p_send_rate: 512000000
-    persistent_peers: "6ef43e8d5be8d0499b6c57eb15d3dd6dee809c1e@sentry-1.gardia.zenrocklabs.io:26656,1dfbd854bab6ca95be652e8db078ab7a069eae6f@sentry-2.gardia.zenrocklabs.io:36656,63014f89cf325d3dc12cc8075c07b5f4ee666d64@sentry-3.gardia.zenrocklabs.io:46656,12f0463250bf004107195ff2c885be9b480e70e2@sentry-4.gardia.zenrocklabs.io:56656"
-    unconditional_peer_ids: "6ef43e8d5be8d0499b6c57eb15d3dd6dee809c1e,1dfbd854bab6ca95be652e8db078ab7a069eae6f,63014f89cf325d3dc12cc8075c07b5f4ee666d64,12f0463250bf004107195ff2c885be9b480e70e2"
+    persistent_peers: "07b6d8891e7b0239abf6744a2794e4eaa6cc76a4@sentry-1.gardia.zenrocklabs.io:26656,1dfbd854bab6ca95be652e8db078ab7a069eae6f@sentry-2.gardia.zenrocklabs.io:36656,63014f89cf325d3dc12cc8075c07b5f4ee666d64@sentry-3.gardia.zenrocklabs.io:46656,12f0463250bf004107195ff2c885be9b480e70e2@sentry-4.gardia.zenrocklabs.io:56656"
+    unconditional_peer_ids: "07b6d8891e7b0239abf6744a2794e4eaa6cc76a4,1dfbd854bab6ca95be652e8db078ab7a069eae6f,63014f89cf325d3dc12cc8075c07b5f4ee666d64,12f0463250bf004107195ff2c885be9b480e70e2"
     pex: true
     pruning: nothing
     pruning_interval: "100"
