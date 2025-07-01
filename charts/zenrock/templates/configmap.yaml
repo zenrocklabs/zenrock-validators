@@ -220,9 +220,9 @@ data:
     [state-sync]
     # snapshot-interval specifies the block interval at which local state sync snapshots are
     # taken (0 to disable).
-    snapshot-interval = "{{ .Values.zenrock.config.snapshot-interval }}"
+    snapshot-interval = "{{ .Values.zenrock.config.snapshot_interval }}"
     # snapshot-keep-recent specifies the number of recent snapshots to keep and serve (0 to keep all).
-    snapshot-keep-recent = "{{ .Values.zenrock.config.snapshot-keep-recent }}"
+    snapshot-keep-recent = "{{ .Values.zenrock.config.snapshot_keep_recent }}"
     ###############################################################################
     ###                         Store / State Streaming                         ###
     ###############################################################################
