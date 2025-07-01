@@ -204,8 +204,8 @@ zenrock:
     p2p_recv_rate: 5120000
     max_num_inbound_peers: 50
     max_num_outbound_peers: 20
-    snapshot-keep-recent: 2
-    snapshot-interval: 1000
+    snapshot_keep_recent: 2
+    snapshot_interval: 1000
   env: {}
   configMapEnv: []
   resources:
