@@ -689,7 +689,7 @@ data:
     # 		- When "kv" is chosen "tx.height" and "tx.hash" will always be indexed.
     #   3) "psql" - the indexer services backed by PostgreSQL.
     # When "kv" or "psql" is chosen "tx.height" and "tx.hash" will always be indexed.
-    indexer = "kv"
+    indexer = "{{ .Values.zenrock.config.indexer }}"
     # The PostgreSQL connection configuration, the connection format:
     #   postgresql://<user>:<password>@<host>:<port>/<db>?<opts>
     psql-conn = ""

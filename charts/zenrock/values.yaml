@@ -206,6 +206,7 @@ zenrock:
     max_num_outbound_peers: 20
     snapshot_keep_recent: 2
     snapshot_interval: 0
+    indexer: "kv"
   env: {}
   configMapEnv: []
   resources:
