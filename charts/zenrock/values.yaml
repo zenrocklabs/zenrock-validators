@@ -207,7 +207,7 @@ zenrock:
     snapshot_keep_recent: 2
     snapshot_interval: 0
     indexer: "kv"
-    max_body_bytes: 5000000
+    max_body_bytes: "5000000"
   env: {}
   configMapEnv: []
   resources:
