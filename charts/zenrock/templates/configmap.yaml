@@ -475,7 +475,7 @@ data:
     # See https://github.com/tendermint/tendermint/issues/3435
     timeout_broadcast_tx_commit = "10s"
     # Maximum size of request body, in bytes
-    max_body_bytes = "{{ .Values.zenrock.config.max_body_bytes }}"
+    max_body_bytes = {{ .Values.zenrock.config.max_body_bytes }}
     # Maximum size of request header, in bytes
     max_header_bytes = 1048576
     # The path to a file containing certificate that is used to create the HTTPS server.
