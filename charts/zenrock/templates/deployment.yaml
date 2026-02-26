@@ -144,6 +144,16 @@ spec:
             - name: {{ $key }}
               value: "{{ $value }}"
             {{- end }}
+            {{- range .Values.sidecar.secretEnv }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretName }}
+                  key: {{ .key }}
+                  {{- if hasKey . "optional" }}
+                  optional: {{ .optional }}
+                  {{- end }}
+            {{- end }}
         {{- end }}
         - name: cosmovisor
           image: {{ .Values.images.cosmovisor }}
