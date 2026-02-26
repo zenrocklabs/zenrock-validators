@@ -62,6 +62,45 @@ spec:
           readOnly: true
 
       containers:
+        {{- if .Values.sidecar.enclave.enabled }}
+        - name: tss-enclave
+          image: {{ .Values.images.sidecar }}
+          imagePullPolicy: {{ .Values.sidecar.enclave.imagePullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
+            SOCKET_PATH="${TSS_ENCLAVE_SOCKET:-{{ .Values.sidecar.enclave.socketPath }}}"
+            STORE_DIR="${TSS_ENCLAVE_STORE_DIR:-{{ .Values.sidecar.enclave.storeDir }}}"
+            TEE_MODE="${TSS_TEE_TYPE:-soft}"
+            ARGS="-t ${TEE_MODE} -s ${SOCKET_PATH} -d ${STORE_DIR}"
+            [ -n "$TSS_KMS_KEY_ARN" ] && ARGS="$ARGS --kms-key-arn $TSS_KMS_KEY_ARN"
+            [ -n "$TSS_KMS_REGION" ] && ARGS="$ARGS --kms-region $TSS_KMS_REGION"
+            [ -n "$TSS_KMS_PROXY_PORT" ] && ARGS="$ARGS --kms-proxy-port $TSS_KMS_PROXY_PORT"
+            rm -f "${SOCKET_PATH}"
+            mkdir -p "$(dirname "${SOCKET_PATH}")"
+            mkdir -p "${STORE_DIR}"
+            exec /root-data/sidecar/bin/tss-enclave $ARGS
+          volumeMounts:
+          - name: root-data
+            mountPath: /root-data
+          - name: tss-enclave-socket
+            mountPath: /var/run/tss-enclave
+          env:
+            {{- range $key, $value := .Values.sidecar.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+            {{- range .Values.sidecar.secretEnv }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretName }}
+                  key: {{ .key }}
+                  {{- if hasKey . "optional" }}
+                  optional: {{ .optional }}
+                  {{- end }}
+            {{- end }}
+        {{- end }}
         {{- if .Values.sidecar.enabled }}
         - name: validator-sidecar
           image: {{ .Values.images.sidecar }}
@@ -69,41 +108,14 @@ spec:
           args:
           - "-c"
           - |
-            CEREMONY_ARGS=""
-            [ -n "$TSS_PRIVATE_KEY" ] && CEREMONY_ARGS="--private-key $TSS_PRIVATE_KEY"
-            [ -n "$TSS_P2P_PORT" ] && CEREMONY_ARGS="$CEREMONY_ARGS --p2p-port $TSS_P2P_PORT"
-            [ -n "$TSS_EXTERNAL_IP" ] && CEREMONY_ARGS="$CEREMONY_ARGS --external-ip $TSS_EXTERNAL_IP"
-            [ -n "$TSS_RENDEZVOUS" ] && CEREMONY_ARGS="$CEREMONY_ARGS --rendezvous $TSS_RENDEZVOUS"
-            [ -n "$TSS_REST_ENDPOINT" ] && CEREMONY_ARGS="$CEREMONY_ARGS --rest $TSS_REST_ENDPOINT"
-            [ -n "$TSS_GRPC" ] && CEREMONY_ARGS="$CEREMONY_ARGS --grpc $TSS_GRPC"
-            [ -n "$TSS_CHAIN_ID" ] && CEREMONY_ARGS="$CEREMONY_ARGS --chain-id $TSS_CHAIN_ID"
-            [ -n "$TSS_STATE_DIR" ] && CEREMONY_ARGS="$CEREMONY_ARGS --state-dir $TSS_STATE_DIR"
-            [ -n "$TSS_ENCLAVE_KEY_ID" ] && CEREMONY_ARGS="$CEREMONY_ARGS --enclave-key-id $TSS_ENCLAVE_KEY_ID"
-            [ -n "$TSS_ENCLAVE_SOCKET" ] && CEREMONY_ARGS="$CEREMONY_ARGS --enclave-socket $TSS_ENCLAVE_SOCKET"
-            [ -n "$TSS_TEE_TYPE" ] && CEREMONY_ARGS="$CEREMONY_ARGS --tee-type $TSS_TEE_TYPE"
-            [ -n "$TSS_KEYRING_ADDR" ] && CEREMONY_ARGS="$CEREMONY_ARGS --keyring-addr $TSS_KEYRING_ADDR"
-            [ "$TSS_DEBUG" = "true" ] && CEREMONY_ARGS="$CEREMONY_ARGS --debug"
-
-            if [ -n "$TSS_PEERS" ]; then
-              IFS=','
-              for peer in $TSS_PEERS; do
-                CEREMONY_ARGS="$CEREMONY_ARGS --peer $peer"
-              done
-              unset IFS
-            fi
-
-            if [ -n "$TSS_PRIVATE_KEY" ] || [ -n "$TSS_ENCLAVE_SOCKET" ]; then
-              if [ -x /root-data/sidecar/bin/ceremony-sidecar ]; then
-                /root-data/sidecar/bin/ceremony-sidecar $CEREMONY_ARGS &
-              else
-                echo "TSS key/socket set but ceremony-sidecar binary missing; continuing without ceremony process"
-              fi
-            fi
-
-            exec /root-data/sidecar/bin/validator_sidecar
+            exec /root-data/sidecar/bin/validator_sidecar --mode=all
           volumeMounts:
           - name: root-data
             mountPath: /root-data
+          {{- if .Values.sidecar.enclave.enabled }}
+          - name: tss-enclave-socket
+            mountPath: /var/run/tss-enclave
+          {{- end }}
           - name: eigen-keys
             mountPath: /eigen/keys/ecdsa.key.json
             subPath: ecdsa.key.json
@@ -266,6 +278,10 @@ spec:
       - name: eigen-keys
         secret:
           secretName: {{ .Values.sidecar.eigen_operator.keysFromSecret }}
+      {{- end }}
+      {{- if .Values.sidecar.enclave.enabled }}
+      - name: tss-enclave-socket
+        emptyDir: {}
       {{- end }}
       {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}

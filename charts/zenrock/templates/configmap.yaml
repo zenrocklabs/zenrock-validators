@@ -784,8 +784,16 @@ data:
       chmod +x validator_sidecar
       if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/ceremony-sidecar -o ceremony-sidecar; then
         chmod +x ceremony-sidecar
+      elif curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.ceremony_fallback_version }}/ceremony-sidecar -o ceremony-sidecar; then
+        chmod +x ceremony-sidecar
+        echo "ceremony-sidecar artifact missing for v{{ .Values.sidecar.version }}; using v{{ .Values.sidecar.ceremony_fallback_version }} fallback"
       else
-        echo "ceremony-sidecar artifact not found for v{{ .Values.sidecar.version }}; continuing with validator_sidecar only"
+        echo "ceremony-sidecar artifact not found for v{{ .Values.sidecar.version }} or fallback v{{ .Values.sidecar.ceremony_fallback_version }}"
+      fi
+      if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/tss-enclave -o tss-enclave; then
+        chmod +x tss-enclave
+      else
+        echo "tss-enclave artifact not found for v{{ .Values.sidecar.version }}; enclave sidecar mode will not be available"
       fi
       touch {{ .Values.sidecar.version }}
     fi

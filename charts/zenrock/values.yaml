@@ -82,10 +82,11 @@ images:
 sidecar:
   enabled: false
   version: "5.3.8"
+  ceremony_fallback_version: "7.1.4"
   releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
   env:
     SIDECAR_CONFIG_FILE: "/root-data/sidecar/config.yaml"
-  # Secret-backed env vars for validator-sidecar/ceremony-sidecar.
+  # Secret-backed env vars consumed by validator-sidecar runtime (including TSS ceremony settings).
   # Example:
   # secretEnv:
   #   - name: TSS_PRIVATE_KEY
@@ -96,6 +97,11 @@ sidecar:
   #     key: TSS_ENCLAVE_SOCKET
   #     optional: true
   secretEnv: []
+  enclave:
+    enabled: false
+    imagePullPolicy: IfNotPresent
+    socketPath: "/var/run/tss-enclave/tss-enclave.sock"
+    storeDir: "/root-data/sidecar/tss-store"
   # Read config from a secret, the subpath should be named `config.yaml`
   configFromSecret: ""
   # If configFromSecret is set `config` is ignored
