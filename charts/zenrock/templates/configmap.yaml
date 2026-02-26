@@ -782,6 +782,11 @@ data:
       rm -rf *
       curl -Ls {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/validator_sidecar -o validator_sidecar
       chmod +x validator_sidecar
+      if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/ceremony-sidecar -o ceremony-sidecar; then
+        chmod +x ceremony-sidecar
+      else
+        echo "ceremony-sidecar artifact not found for v{{ .Values.sidecar.version }}; continuing with validator_sidecar only"
+      fi
       touch {{ .Values.sidecar.version }}
     fi
     echo "Initialization completed"
