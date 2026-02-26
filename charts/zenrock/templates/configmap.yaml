@@ -714,6 +714,7 @@ data:
   init.sh: |
     # install curl
     apk add curl 1>/dev/null
+    apk add unzip 1>/dev/null
 
     # ensure folder structures
     mkdir -p /root-data/config
@@ -780,15 +781,32 @@ data:
     if ! [ -f "/root-data/sidecar/bin/{{ .Values.sidecar.version }}" ]; then
       cd /root-data/sidecar/bin/
       rm -rf *
-      curl -Ls {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/validator_sidecar -o validator_sidecar
+
+      # Preferred path: single sidecar bundle (validator + ceremony binaries)
+      if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/validator_sidecar.zip -o validator_sidecar.zip; then
+        unzip -o validator_sidecar.zip
+        rm -f validator_sidecar.zip
+      fi
+
+      # Backward compatible fallback for older releases without bundled zip
+      if ! [ -f "validator_sidecar" ]; then
+        if ! curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/validator_sidecar -o validator_sidecar; then
+          echo "validator_sidecar artifact not found for v{{ .Values.sidecar.version }}"
+          exit 1
+        fi
+      fi
       chmod +x validator_sidecar
-      if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/ceremony-sidecar -o ceremony-sidecar; then
+
+      if [ -f "ceremony-sidecar" ]; then
+        chmod +x ceremony-sidecar
+      elif curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/ceremony-sidecar -o ceremony-sidecar; then
         chmod +x ceremony-sidecar
       elif curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.ceremony_fallback_version }}/ceremony-sidecar -o ceremony-sidecar; then
         chmod +x ceremony-sidecar
         echo "ceremony-sidecar artifact missing for v{{ .Values.sidecar.version }}; using v{{ .Values.sidecar.ceremony_fallback_version }} fallback"
       else
         echo "ceremony-sidecar artifact not found for v{{ .Values.sidecar.version }} or fallback v{{ .Values.sidecar.ceremony_fallback_version }}"
+        exit 1
       fi
       if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/tss-enclave -o tss-enclave; then
         chmod +x tss-enclave
