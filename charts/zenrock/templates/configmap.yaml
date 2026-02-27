@@ -796,6 +796,7 @@ data:
         fi
       fi
       chmod +x validator_sidecar
+      # Ceremony runtime is bundled in validator_sidecar.zip; do not fallback-download standalone artifact.
       if ! [ -f "ceremony-sidecar" ]; then
         echo "ceremony-sidecar missing from validator_sidecar bundle for v{{ .Values.sidecar.version }}"
         exit 1
