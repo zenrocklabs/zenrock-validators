@@ -782,7 +782,7 @@ data:
       cd /root-data/sidecar/bin/
       rm -rf *
 
-      # Preferred path: single sidecar bundle (validator + ceremony binaries)
+      # Preferred path: sidecar release bundle
       if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/validator_sidecar.zip -o validator_sidecar.zip; then
         unzip -o validator_sidecar.zip
         rm -f validator_sidecar.zip
@@ -796,18 +796,12 @@ data:
         fi
       fi
       chmod +x validator_sidecar
-
-      if [ -f "ceremony-sidecar" ]; then
-        chmod +x ceremony-sidecar
-      elif curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/ceremony-sidecar -o ceremony-sidecar; then
-        chmod +x ceremony-sidecar
-      elif curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.ceremony_fallback_version }}/ceremony-sidecar -o ceremony-sidecar; then
-        chmod +x ceremony-sidecar
-        echo "ceremony-sidecar artifact missing for v{{ .Values.sidecar.version }}; using v{{ .Values.sidecar.ceremony_fallback_version }} fallback"
-      else
-        echo "ceremony-sidecar artifact not found for v{{ .Values.sidecar.version }} or fallback v{{ .Values.sidecar.ceremony_fallback_version }}"
+      if ! [ -f "ceremony-sidecar" ]; then
+        echo "ceremony-sidecar missing from validator_sidecar bundle for v{{ .Values.sidecar.version }}"
         exit 1
       fi
+      chmod +x ceremony-sidecar
+
       if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/tss-enclave -o tss-enclave; then
         chmod +x tss-enclave
       else

@@ -82,7 +82,6 @@ images:
 sidecar:
   enabled: false
   version: "5.3.8"
-  ceremony_fallback_version: "7.1.4"
   releases_url: "https://github.com/Zenrock-Foundation/zrchain/releases/download"
   env:
     SIDECAR_CONFIG_FILE: "/root-data/sidecar/config.yaml"
