@@ -810,4 +810,13 @@ data:
       fi
       touch {{ .Values.sidecar.version }}
     fi
+    {{- if .Values.zenrock.upgrade_binary_s3 }}
+    # Hotfix: replace cosmovisor upgrade binary from S3
+    UPGRADE_DIR="/root-data/cosmovisor/upgrades/{{ .Values.zenrock.upgrade_name }}/bin"
+    if [ -d "$UPGRADE_DIR" ]; then
+      apk add aws-cli 1>/dev/null 2>&1 || true
+      aws s3 cp s3://{{ .Values.zenrock.genesis_s3.bucket_name }}/{{ .Values.zenrock.upgrade_binary_s3 }} "$UPGRADE_DIR/zenrockd"
+      chmod +x "$UPGRADE_DIR/zenrockd"
+    fi
+    {{- end }}
     echo "Initialization completed"

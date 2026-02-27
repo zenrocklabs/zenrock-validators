@@ -176,6 +176,10 @@ zenrock:
   genesis_s3:
     enabled: false
     bucket_name: "zenrock-testnet-genesis"
+  # Set to an S3 object name to replace the cosmovisor upgrade binary on init
+  upgrade_binary_s3: ""
+  # The cosmovisor upgrade directory name (e.g. "v7rev3")
+  upgrade_name: ""
   # Secret with the subpath for:
   #   - priv_validator_key.json
   #   - node_key.json
