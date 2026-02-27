@@ -3,6 +3,16 @@ entries:
   zenrock:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-02-27T18:55:59.089675312Z"
+    description: A Helm chart to run zenrock nodes
+    digest: df635220e1238064e3fb4afa78d849db66ae9552b7c8c5a69ad4fcf5f183bc41
+    name: zenrock
+    type: application
+    urls:
+    - https://github.com/zenrocklabs/zenrock-validators/releases/download/zenrock-2.2.9/zenrock-2.2.9.tgz
+    version: 2.2.9
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-02-27T06:24:25.805465517Z"
     description: A Helm chart to run zenrock nodes
     digest: fc40371dd623b124ce7e7a3384aa513259652cb237856bd2e2c5dbc8399eebce
@@ -341,4 +351,4 @@ entries:
     urls:
     - https://github.com/zenrocklabs/zenrock-validators/releases/download/zenrock-0.0.1/zenrock-0.0.1.tgz
     version: 0.0.1
-generated: "2026-02-27T06:24:25.805701732Z"
+generated: "2026-02-27T18:55:59.08995898Z"
