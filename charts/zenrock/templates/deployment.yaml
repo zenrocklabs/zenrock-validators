@@ -62,7 +62,7 @@ spec:
           readOnly: true
 
       containers:
-        {{- if .Values.sidecar.enclave.enabled }}
+        {{- if and .Values.sidecar.enclave.enabled (not .Values.sidecar.enclave.hostSocketDir) }}
         - name: tss-enclave
           image: {{ .Values.images.sidecar }}
           imagePullPolicy: {{ .Values.sidecar.enclave.imagePullPolicy }}
@@ -281,7 +281,13 @@ spec:
       {{- end }}
       {{- if .Values.sidecar.enclave.enabled }}
       - name: tss-enclave-socket
+        {{- if .Values.sidecar.enclave.hostSocketDir }}
+        hostPath:
+          path: {{ .Values.sidecar.enclave.hostSocketDir }}
+          type: DirectoryOrCreate
+        {{- else }}
         emptyDir: {}
+        {{- end }}
       {{- end }}
       {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}

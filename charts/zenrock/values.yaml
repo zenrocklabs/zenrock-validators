@@ -101,6 +101,9 @@ sidecar:
     imagePullPolicy: IfNotPresent
     socketPath: "/var/run/tss-enclave/tss-enclave.sock"
     storeDir: "/root-data/sidecar/tss-store"
+    # Set to a host directory to use hostPath instead of emptyDir for the enclave socket volume.
+    # Use this when the enclave runs on the host (e.g. Nitro) rather than in-pod.
+    hostSocketDir: ""
   # Read config from a secret, the subpath should be named `config.yaml`
   configFromSecret: ""
   # If configFromSecret is set `config` is ignored
