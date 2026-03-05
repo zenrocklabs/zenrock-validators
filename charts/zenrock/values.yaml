@@ -205,6 +205,7 @@ zenrock:
     # these are applied if and only if the pruning strategy is custom.
     pruning_keep_recent: "100000"
     pruning_interval: "100"
+    swagger: false
     # config.toml
     moniker: "moniker"
     persistent_peers: ""
