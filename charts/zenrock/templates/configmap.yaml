@@ -797,11 +797,11 @@ data:
       fi
       chmod +x validator_sidecar
       # Ceremony runtime is bundled in validator_sidecar.zip; do not fallback-download standalone artifact.
-      if ! [ -f "ceremony-sidecar" ]; then
-        echo "ceremony-sidecar missing from validator_sidecar bundle for v{{ .Values.sidecar.version }}"
-        exit 1
-      fi
-      chmod +x ceremony-sidecar
+      #if ! [ -f "ceremony-sidecar" ]; then
+      #  echo "ceremony-sidecar missing from validator_sidecar bundle for v{{ .Values.sidecar.version }}"
+      #  exit 1
+      #fi
+      #chmod +x ceremony-sidecar
 
       if curl -fLs {{ .Values.sidecar.releases_url }}/v{{ .Values.sidecar.version }}/tss-enclave -o tss-enclave; then
         chmod +x tss-enclave
